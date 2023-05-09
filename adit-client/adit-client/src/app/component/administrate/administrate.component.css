@@ -1,0 +1,12 @@
+
+.nav-item,.nav-link {
+  transition: transform 0.7s, background-color 0.7s;
+}
+
+.nav-item:hover {
+  transform: scale(110%);
+  transform: translateX(10px);
+
+  filter: opacity(70%);
+}
+

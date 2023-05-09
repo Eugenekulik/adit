@@ -1,0 +1,24 @@
+<div class="container-fluid d-flex p-0">
+  <ul class="navbar-nav nav-pills flex-column mb-auto col-2 bg-opacity-50 bg-dark min-vh-100"
+      style="border-radius: 0% 0% 3% 0%;">
+    <h4 class="text-center m-2 border-bottom border-2 border-dark">Administrate panel</h4>
+    <li class="nav-item btn btn-outline-dark bg-opacity-75 border-0">
+      <a class="w-100 h-auto nav-link h4 text-uppercase" [routerLink]="'/administrate/advertisement'">advertisements</a>
+    </li>
+    <li class="nav-item btn btn-outline-dark border-0">
+      <a class="nav-link w-100 h-auto h4 text-uppercase" [routerLink]="'/administrate/user'">user</a>
+    </li>
+    <li class="nav-item btn btn-outline-dark border-0">
+      <a class="nav-link w-100 h-auto h4 text-uppercase" [routerLink]="'/administrate/category'">categories</a>
+    </li>
+    <li class="nav-item btn btn-outline-dark border-0">
+      <a class="nav-link w-100 h-auto h4 text-uppercase" [routerLink]="'/administrate/feature'">features</a>
+    </li>
+    <li class="nav-item btn btn-outline-dark border-0">
+      <a class="nav-link w-100 h-auto h4 text-uppercase" [routerLink]="'/administrate/address'">addresses</a>
+    </li>
+  </ul>
+  <div class="col-10">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+body {
+  background: rgba(122, 116, 116, 0.03);
+}
+
+.popover-body{
+  background: aliceblue;
+  opacity: 100%;
+}

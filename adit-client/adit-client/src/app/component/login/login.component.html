@@ -1,0 +1,84 @@
+<div class="container d-flex justify-content-center">
+  <div class="card col-4 mt-5 bg-opacity-50 bg-secondary align-items-center">
+    <h2>Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="doLogin(loginForm)"
+          class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
+      <input ngModel class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+             type="text"
+             name="login"
+             id="login"
+             placeholder="Enter name">
+      <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+             ngModel
+             type="password"
+             name="password"
+             id="password"
+             placeholder="Enter password">
+      <button class="btn btn-success col-6" type="submit">Login</button>
+    </form>
+    <button type="button" data-bs-target="#registration-modal"
+            class="btn btn-white btn-sm bg-opacity-75 col-8" data-bs-toggle="modal">
+      <span class="h4 text-black">Registration</span>
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="registration-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Registration</div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registrateForm" (ngSubmit)="registration()"
+              class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
+          <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+                 type="text"
+                 name="login"
+                 id="r-username"
+                 placeholder="Enter name" required formControlName="login">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="password"
+                 name="password"
+                 id="r-password"
+                 placeholder="Enter password" required formControlName="password">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="password"
+                 name="password-confirmation"
+                 id="r-password-с"
+                 placeholder="Password confirmation" required formControlName="confPassword">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="text"
+                 name="firstname"
+                 id="firstname"
+                 placeholder="Enter first name" required formControlName="firstName">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="text"
+                 name="lastname"
+                 id="lastname"
+                 placeholder="Enter last name" required formControlName="lastName">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="email"
+                 name="email"
+                 id="email"
+                 placeholder="Enter email" required formControlName="email">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="date"
+                 name="age"
+                 id="age"
+                 placeholder="Enter birthday" value="2005-01-01" required formControlName="age">
+          <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
+                 type="text"
+                 name="phone"
+                 id="phone"
+                 placeholder="Enter phone" formControlName="phone">
+          <button [disabled]="registrateForm.invalid" class="btn btn-success col-6" type="submit" >Registrate</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

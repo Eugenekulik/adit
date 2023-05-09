@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>login</th>
+      <th>first name</th>
+      <th>last name</th>
+      <th>age</th>
+      <th>phone</th>
+      <th>email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.login}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.age}}</td>
+      <td>{{user.phone}}</td>
+      <td>{{user.email}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <ul class="pagination">
+    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getUsers(page-1)">Previous</a></li>
+    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getUsers(page-2)">{{page-1}}</a></li>
+    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getUsers(page-1)">{{page}}</a></li>
+    <li disabled="true" class="page-item"><a class="page-link">{{page+1}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getUsers(page+1)">{{page+2}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getUsers(page+2)">{{page+3}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getUsers(page+1)">Next</a></li>
+  </ul>
+</div>
