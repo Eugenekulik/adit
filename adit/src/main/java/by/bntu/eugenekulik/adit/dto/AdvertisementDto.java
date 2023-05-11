@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,14 +52,16 @@ public class AdvertisementDto {
 
   public static AdvertisementDto fromAdvertisement(Advertisement advertisement) {
     List<FeatureDto> features = new ArrayList<>();
-    advertisement.getFeatures().forEach(featureValue -> CategoryDto
-        .fromCategory(advertisement.getCategory()).getFeatures().stream()
-        .filter(feature -> feature.getFeatureId().equals(featureValue.getFeatureId()))
-        .findFirst()
-        .ifPresent(feature -> {
-          feature.setValue(featureValue.getValue());
-          features.add(feature);
-        }));
+    if (advertisement.getCategory() != null && advertisement.getCategory().getFeatures() != null) {
+      advertisement.getFeatures().forEach(featureValue -> CategoryDto
+          .fromCategory(advertisement.getCategory()).getFeatures().stream()
+          .filter(feature -> feature.getFeatureId().equals(featureValue.getFeatureId()))
+          .findFirst()
+          .ifPresent(feature -> {
+            feature.setValue(featureValue.getValue());
+            features.add(feature);
+          }));
+    }
     return AdvertisementDto.builder()
         .user(UserDto.fromUser(advertisement.getUser()))
         .id(advertisement.getAdId())
@@ -69,7 +72,8 @@ public class AdvertisementDto {
         .placedAt(advertisement.getPlacedAt())
         .status(advertisement.getStatus())
         .price(advertisement.getPrice())
-        .images(advertisement.getImages().stream().map(ImageDto::fromImage).toList())
+        .images(advertisement.getImages()!=null?
+            advertisement.getImages().stream().map(ImageDto::fromImage).toList(): Collections.emptyList())
         .features(features)
         .build();
   }

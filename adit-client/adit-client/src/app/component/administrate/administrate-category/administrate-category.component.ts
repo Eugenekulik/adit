@@ -22,6 +22,7 @@ export class AdministrateCategoryComponent implements OnInit {
   faSearch =  faSearch;
   totalFeaturesPages: number;
   totalCategoryPages: number;
+  featurePage: number;
 
   constructor(private http:HttpClient, private modalService:NgbModal) { }
   open(content:any, category:Category) {
@@ -65,14 +66,21 @@ export class AdministrateCategoryComponent implements OnInit {
   }
 
   deleteCategory(category: Category) {
+    const index = this.categories.indexOf(category);
+    if (index > -1) {
+      this.categories.splice(index, 1);
+    }
     this.http.delete("http://localhost:8080/category/" + category.categoryId).subscribe(res=>{
       console.log(res);
     });
   }
 
-  searchFeatures() {
+  searchFeatures(page:number) {
+    this.featurePage = page;
     this.http.get("http://localhost:8080/feature/search", {
-      params: new HttpParams().append('name', this.words)
+      params: new HttpParams()
+        .append('name', this.words)
+        .append('page', page)
     }).subscribe((res:any)=>{
       this.searchResult = res.content;
       this.totalFeaturesPages = res.totalPages;

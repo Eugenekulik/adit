@@ -1,0 +1,24 @@
+<div class="container">
+  <form [formGroup]="advForm" (ngSubmit)="createAdvertisement()">
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           type="text"
+           name="name"
+           id="name"
+           placeholder="Enter name" required formControlName="name">
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           type="text"
+           name="description"
+           id="description"
+           placeholder="Write description" required formControlName="description">
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           type="number"
+           name="price"
+           id="price"
+           placeholder="Enter price"
+           required
+           formControlName="price">
+    <input type="submit" value="create">
+
+  </form>
+  <input type="file" (change)="onFileSelect($event)">
+</div>

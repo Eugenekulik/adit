@@ -3,11 +3,9 @@ package by.bntu.eugenekulik.adit.dao;
 import by.bntu.eugenekulik.adit.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,4 +19,5 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
   Page<Category> findAll(Pageable page);
 
   Optional<Category> deleteByCategoryId(Long id);
+
 }

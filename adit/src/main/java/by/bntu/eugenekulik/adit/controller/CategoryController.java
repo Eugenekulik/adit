@@ -23,6 +23,11 @@ public class CategoryController {
   }
 
 
+  @GetMapping("/children")
+  public Iterable<Category> getChildren(@RequestParam(required = false) Long parentId){
+    return service.findChildren(parentId);
+  }
+
   @PostMapping
   public ResponseEntity<Category> createCategory(@RequestParam String name, @RequestParam(required = false) String parentName) {
     Category category = new Category();

@@ -44,7 +44,7 @@ public class ImageService {
     String curDate = LocalDateTime.now().getNano() + "";
     String fileName =
         "image_" + curDate + "_" + file.getOriginalFilename().toLowerCase().replaceAll(" ", "-");
-    file.transferTo(new File(uploadDir + "\\" + fileName));
+    file.transferTo(new File("%s\\%s".formatted(uploadDir, fileName)));
 
     String extension = file.getOriginalFilename();
     extension = extension.substring(extension.lastIndexOf("."));

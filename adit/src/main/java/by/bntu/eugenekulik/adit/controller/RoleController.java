@@ -4,7 +4,6 @@ import by.bntu.eugenekulik.adit.entity.Role;
 import by.bntu.eugenekulik.adit.service.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

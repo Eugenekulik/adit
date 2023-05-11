@@ -12,9 +12,9 @@
     <tr *ngFor="let category of categories">
       <td>{{category.name}}</td>
       <td>
-        <button type="button" (click)="open(content,category)">
-          features
-        </button>
+        <a type="button" (click)="open(content,category)">
+          features...
+        </a>
       </td>
       <td>
         <div *ngIf="category.parent">{{category.parent.name}}</div>
@@ -64,10 +64,10 @@
   <div class="container-fluid">
     <div class="d-flex me-4">
       <div class="form-outline">
-        <input [(ngModel)]="words" (change)="searchFeatures()" type="search" id="form1" class="form-control"
+        <input [(ngModel)]="words" (change)="searchFeatures(0)" type="search" id="form1" class="form-control"
                placeholder="Search"/>
       </div>
-      <button type="button" class="btn btn-primary" (click)="searchFeatures()">
+      <button type="button" class="btn btn-primary" (click)="searchFeatures(0)">
         <fa-icon [icon]="faSearch"></fa-icon>
       </button>
     </div>
@@ -88,6 +88,15 @@
         </tr>
         </tbody>
       </table>
+      <ul class="pagination">
+        <li class="page-item" *ngIf="featurePage>0"><a class="page-link" (click)="searchFeatures(featurePage-1)">Previous</a></li>
+        <li class="page-item" *ngIf="featurePage>1"><a class="page-link" (click)="searchFeatures(featurePage-2)">{{featurePage-1}}</a></li>
+        <li class="page-item" *ngIf="featurePage>0"><a class="page-link" (click)="searchFeatures(featurePage-1)">{{featurePage}}</a></li>
+        <li disabled="true" *ngIf="page" class="page-item"><a class="page-link">{{featurePage+1}}</a></li>
+        <li class="page-item" *ngIf="featurePage<totalFeaturesPages-1"><a class="page-link" (click)="searchFeatures(featurePage+1)">{{featurePage+2}}</a></li>
+        <li class="page-item" *ngIf="featurePage<totalFeaturesPages-2"><a class="page-link" (click)="searchFeatures(featurePage+2)">{{featurePage+3}}</a></li>
+        <li class="page-item" *ngIf="featurePage<totalFeaturesPages-1"><a class="page-link" (click)="searchFeatures(featurePage+1)">Next</a></li>
+      </ul>
     </div>
 
   </div>

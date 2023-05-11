@@ -8,8 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -57,5 +56,14 @@ public class CategoryService {
     category.getFeatures().removeIf(feature -> feature.getFeatureId().equals(featureId));
     categoryRepository.save(category);
     return category;
+  }
+
+  public Set<Category> findChildren(Long parentId) {
+    Set<Category> children = new HashSet<>();
+    if(parentId != null) {
+      categoryRepository.findById(parentId).ifPresent(
+          category -> children.addAll(categoryRepository.findByParent(category)));
+    } else children.addAll(categoryRepository.findByParent(null));
+    return children;
   }
 }

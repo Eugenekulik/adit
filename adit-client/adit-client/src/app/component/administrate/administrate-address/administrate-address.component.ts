@@ -26,4 +26,12 @@ export class AdministrateAddressComponent implements OnInit {
       this.totalPages = res.totalPages;
     });
   }
+
+  deleteAddress(address: Address) {
+    const index = this.addresses.indexOf(address);
+    if(index>-1){
+      this.addresses.splice(index,1);
+    }
+    this.http.delete("http://localhost:8080/address/" + address.addressId).subscribe()
+  }
 }

@@ -29,7 +29,7 @@ public class AdvertisementController {
   }
 
   @PostMapping
-  public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestParam Advertisement advertisement) {
+  public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestBody Advertisement advertisement) {
     advertisement.setPlacedAt(LocalDateTime.now());
     return new ResponseEntity<>(
         AdvertisementDto.fromAdvertisement(advertisementService.save(advertisement)),
@@ -59,4 +59,15 @@ public class AdvertisementController {
         .map(ResponseEntity::ok)
         .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
+
+  @GetMapping("/category")
+  public Iterable<AdvertisementDto> getByCategory(@RequestParam Long categoryId, @RequestParam(required = false) Integer page){
+    if(page == null) page = 0;
+    Page<Advertisement> result = advertisementService.getByCategory(categoryId,page);
+    return new PageImpl<>(result.stream()
+        .map(AdvertisementDto::fromAdvertisement)
+        .toList(), PageRequest.of(page,10),result.getTotalElements());
+  }
+
+
 }
