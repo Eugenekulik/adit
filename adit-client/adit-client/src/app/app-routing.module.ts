@@ -20,6 +20,7 @@ import {AdvertisementComponent} from "./component/advertisement/advertisement.co
 import {
   AdvertisementEditComponent
 } from "./component/administrate/administrate-advertisement/advertisement-edit/advertisement-edit.component";
+import {CreateAdvertisementComponent} from "./component/create-advertisement/create-advertisement.component";
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'create', component: CreateAdvertisementComponent},
   {path: 'administrate', component: AdministrateComponent,
     children: [
       {path: 'advertisement', component: AdministrateAdvertisementComponent},

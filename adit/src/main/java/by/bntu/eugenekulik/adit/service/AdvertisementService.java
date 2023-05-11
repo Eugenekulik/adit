@@ -1,11 +1,13 @@
 package by.bntu.eugenekulik.adit.service;
 
+import by.bntu.eugenekulik.adit.dto.AdvertisementDto;
+import by.bntu.eugenekulik.adit.dto.CategoryDto;
 import by.bntu.eugenekulik.adit.entity.Advertisement;
+import by.bntu.eugenekulik.adit.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Set;
 
 public interface AdvertisementService {
   Page<Advertisement> getPage(int page);
@@ -24,4 +26,6 @@ public interface AdvertisementService {
   }
 
   Page<Advertisement> search(String words, Integer page);
+
+  Page<Advertisement> getByCategory(Long categoryId, Integer page);
 }

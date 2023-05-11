@@ -27,4 +27,10 @@ export class AdministrateUserComponent implements OnInit {
       this.totalPages = res.totalPages;
     });
   }
+
+  deleteUser(user: User) {
+    const index = this.users.indexOf(user);
+    if(index >-1)this.users.splice(index,1);
+    this.http.delete("http://localhost:8080/user/" + user.id).subscribe();
+  }
 }

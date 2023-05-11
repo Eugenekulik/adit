@@ -8,6 +8,7 @@
       <th>age</th>
       <th>phone</th>
       <th>email</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -18,6 +19,11 @@
       <td>{{user.age}}</td>
       <td>{{user.phone}}</td>
       <td>{{user.email}}</td>
+      <td>
+        <button class="btn btn-danger" (click)="deleteUser(user)">
+          Delete
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>

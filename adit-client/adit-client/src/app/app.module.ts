@@ -25,6 +25,7 @@ import { AdministrateAddressComponent } from './component/administrate/administr
 import { AdministrateFeatureComponent } from './component/administrate/administrate-feature/administrate-feature.component';
 import { AdvStatusPipe } from './service/pipe/adv-status.pipe';
 import { AdvertisementEditComponent } from './component/administrate/administrate-advertisement/advertisement-edit/advertisement-edit.component';
+import { CreateAdvertisementComponent } from './component/create-advertisement/create-advertisement.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +43,7 @@ import { AdvertisementEditComponent } from './component/administrate/administrat
     AdministrateFeatureComponent,
     AdvStatusPipe,
     AdvertisementEditComponent,
+    CreateAdvertisementComponent,
   ],
   imports: [
     BrowserModule,

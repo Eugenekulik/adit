@@ -2,7 +2,6 @@ package by.bntu.eugenekulik.adit.service;
 
 import by.bntu.eugenekulik.adit.dao.FeatureRepository;
 import by.bntu.eugenekulik.adit.entity.Feature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

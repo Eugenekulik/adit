@@ -6,13 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 
 public interface AdvertisementRepository extends CrudRepository<Advertisement, Long> {
 
   Page<Advertisement> findAll(Pageable pageable);
   Page<Advertisement> findByNameContainsIgnoreCase(String name,
                                                    Pageable pageable);
-  List<Advertisement> findByCategory(Category category);
+
+  @Query("select a from Advertisement a where a.category.categoryId in :categories")
+  Page<Advertisement> findByCategories(@Param("categories") long[] categories, Pageable pageable);
 }

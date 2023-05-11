@@ -1,1 +1,45 @@
-<p>home works!</p>
+<div class="container-fluid p-0 d-flex">
+    <ul class="navbar-nav nav-pills flex-column mb-auto col-2 bg-opacity-50 bg-dark vh-100">
+      <li *ngIf="parent" class="nav-item btn btn-sm btn-outline-dark" (click)="back()"><fa-icon [icon]="faBack"></fa-icon></li>
+      <li class="nav-item btn btn-sm btn-outline-dark" *ngFor="let category of categories">
+        <button class="w-100 h-auto nav-link" (click)="up(category)">{{category.name}}</button>
+      </li>
+    </ul>
+    <div class="col-9">
+      <div class="m-5 p-2 bg-opacity-10 bg-info" *ngFor="let advertisement of advertisements">
+        <div class="h2 ms-2">
+          <h2> {{advertisement.name}}</h2>
+        </div>
+        <div class="d-flex">
+          <div *ngIf="advertisement.images.length" class="col-6">
+            <ngb-carousel class="border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
+            <ng-template ngbSlide *ngFor="let image of advertisement.images">
+              <div class="d-flex align-content-center justify-content-center">
+                <img [src]="image.url" alt="Random first slide" class="m-2 w-auto"
+                     style="height: 400px; max-height: 400px">
+              </div>
+            </ng-template>
+          </ngb-carousel>
+          </div>
+          <div class="mx-5">
+            <p> {{advertisement.description}}</p>
+            <table *ngIf="advertisement.features?.length" class="table-hover table">
+              <tbody>
+              <tr *ngFor="let feature of advertisement.features">
+                <td
+                  placement="right"
+                  ngbPopover="{{feature.description}}"
+                  popoverTitle="{{feature.name}}"
+                >{{feature.name}}
+                </td>
+                <td>{{feature.value}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  <button class="btn btn-success btn-lg add-button" [routerLink]="'/create'"><fa-icon [icon]="faAd"></fa-icon></button>
+</div>
+

@@ -15,6 +15,6 @@ export interface Advertisement {
   user: User;
   price: number;
 
-  categories: Category[];
+  categories: Category;
   features: Feature[];
 }

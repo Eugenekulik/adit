@@ -1,7 +1,6 @@
 body {
-  background: rgba(122, 116, 116, 0.03);
+  background: url("assets/back.jpg");
 }
-
 .popover-body{
   background: aliceblue;
   opacity: 100%;

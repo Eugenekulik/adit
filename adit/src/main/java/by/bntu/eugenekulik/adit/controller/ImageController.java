@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,13 +32,18 @@ public class ImageController {
   @PostMapping(value = "/add", produces = "application/json")
   @ResponseBody
   public ResponseEntity<Map<String, String>> uploadAttachment(
-      @RequestPart(value = "file") MultipartFile file, @RequestParam Long advertisementId)
-      throws IOException {
+      @RequestPart(value = "file") MultipartFile[] files, @RequestParam Long advertisementId) {
     Advertisement advertisement = advertisementService.getAdvertisement(advertisementId).get();
-    Image image = imageService.addImage(file,advertisement);
     Map<String, String> status = new HashMap<>();
-    status.put("status", "ok");
-    status.put("imageId", image.getId().toString());
+    Arrays.stream(files).forEach(file -> {
+      Image image = null;
+      try {
+        image = imageService.addImage(file,advertisement);
+        status.put("status", "ok");
+        status.put("imageId", image.getId().toString());
+      } catch (IOException e) {
+      }
+    });
     return ResponseEntity.ok(status);
   }
 

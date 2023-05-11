@@ -5,7 +5,6 @@ package by.bntu.eugenekulik.adit.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import lombok.Getter;

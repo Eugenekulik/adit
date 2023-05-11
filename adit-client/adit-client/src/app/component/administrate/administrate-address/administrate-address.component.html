@@ -1,31 +1,39 @@
-<div class="container-fluid">
-  <div style="height: 500px">
+<div class="container-fluid h-75">
+  <div>
     <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>country</th>
-      <th>region</th>
-      <th>city</th>
-      <th>part</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let address of addresses">
-      <td>{{address.country}}</td>
-      <td>{{address.region}}</td>
-      <td>{{address.city}}</td>
-      <td>{{address.part}}</td>
-    </tr>
-    </tbody>
-  </table>
+      <thead>
+      <tr>
+        <th>country</th>
+        <th>region</th>
+        <th>city</th>
+        <th>part</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let address of addresses">
+        <td>{{address.country}}</td>
+        <td>{{address.region}}</td>
+        <td>{{address.city}}</td>
+        <td>{{address.part}}</td>
+        <td>
+          <button class="btn btn-warning" (click)="deleteAddress(address)">
+            Archive
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-  <ul class="pagination">
+  <ul class="pagination position-absolute bottom-0">
     <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAddresses(page-1)">Previous</a></li>
-    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-2)">{{page-1}}</a></li>
+    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-2)">{{page - 1}}</a></li>
     <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAddresses(page-1)">{{page}}</a></li>
-    <li disabled="true" class="page-item"><a class="page-link">{{page+1}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAddresses(page+1)">{{page+2}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+2)">{{page+3}}</a></li>
+    <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAddresses(page+1)">{{page + 2}}</a>
+    </li>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+2)">{{page + 3}}</a>
+    </li>
     <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAddresses(page+1)">Next</a></li>
   </ul>
 </div>

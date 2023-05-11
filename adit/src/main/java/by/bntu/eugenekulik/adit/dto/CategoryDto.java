@@ -15,6 +15,7 @@ public class CategoryDto {
     private Set<FeatureDto> features;
 
     public static CategoryDto fromCategory(Category category){
+      if(category == null) return null;
       return CategoryDto.builder()
           .categoryId(category.getCategoryId())
           .features(getFeatures(category))
