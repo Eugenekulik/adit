@@ -8,6 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface UserRepository extends CrudRepository<User, Long> {
     Page<User> findAll(Pageable pageable);
 
-    User deleteUserByUserId(Long id);
     User findByLogin(String login);
 }

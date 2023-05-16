@@ -45,8 +45,8 @@ public class AdvertisementController {
   }
 
   @PatchMapping
-  public ResponseEntity<AdvertisementDto> updateAdvertisement(@RequestParam Advertisement advertisement) {
-    return advertisementService.updateAdvertisement(advertisement)
+  public ResponseEntity<AdvertisementDto> updateAdvertisement(@RequestBody AdvertisementDto advertisementDto) {
+    return advertisementService.updateAdvertisement(advertisementDto.toAdvertisement())
         .map(AdvertisementDto::fromAdvertisement)
         .map(ResponseEntity::ok)
         .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));

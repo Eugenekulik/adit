@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/images")
@@ -31,20 +33,15 @@ public class ImageController {
 
   @PostMapping(value = "/add", produces = "application/json")
   @ResponseBody
-  public ResponseEntity<Map<String, String>> uploadAttachment(
-      @RequestPart(value = "file") MultipartFile[] files, @RequestParam Long advertisementId) {
+  public ResponseEntity<Image> uploadAttachment(
+      @RequestPart(value = "file") MultipartFile file, @RequestParam Long advertisementId) {
     Advertisement advertisement = advertisementService.getAdvertisement(advertisementId).get();
-    Map<String, String> status = new HashMap<>();
-    Arrays.stream(files).forEach(file -> {
-      Image image = null;
-      try {
-        image = imageService.addImage(file,advertisement);
-        status.put("status", "ok");
-        status.put("imageId", image.getId().toString());
-      } catch (IOException e) {
-      }
-    });
-    return ResponseEntity.ok(status);
+    Image image = null;
+    try {
+      image = imageService.addImage(file,advertisement);
+    } catch (IOException e) {
+    }
+    return ResponseEntity.ok(image);
   }
 
   @GetMapping(value = "/{id}", produces = "application/json")
@@ -61,5 +58,21 @@ public class ImageController {
             HttpHeaders.CONTENT_DISPOSITION,
             "image; filename=\"" + resource.getFilename() + "\"")
         .body(resource);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteImage(@PathVariable Long id){
+    Optional<Image> image = imageService.findImageById(id);
+    image.ifPresent(img->{
+      try {
+        imageService.loadFileAsResource(img.getFilename()).getFile().delete();
+        imageService.deleteImage(id);
+      } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    return ResponseEntity.ok("delete image with id: " + id);
   }
 }

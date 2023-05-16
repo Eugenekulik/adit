@@ -54,7 +54,7 @@ public class FeatureController {
 
 
   @PatchMapping
-  public ResponseEntity<FeatureDto> updateFeature(@RequestParam FeatureDto feature){
+  public ResponseEntity<FeatureDto> updateFeature(@RequestBody FeatureDto feature){
     return ResponseEntity
         .ok(FeatureDto
             .fromFeature(service
@@ -63,7 +63,7 @@ public class FeatureController {
 
 
   @GetMapping("/search")
-  public Iterable<FeatureDto> findbyName(@RequestParam String name, @RequestParam Integer page){
+  public Iterable<FeatureDto> findByName(@RequestParam String name, @RequestParam Integer page){
     Page<Feature> result = service.findByNameContains(name, page);
     return new PageImpl<>(service.findByNameContains(name, page).stream()
         .map(FeatureDto::fromFeature)

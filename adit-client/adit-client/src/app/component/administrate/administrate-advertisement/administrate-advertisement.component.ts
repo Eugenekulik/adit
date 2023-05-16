@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Advertisement} from "../../../domain/advertisement";
 import {Router} from "@angular/router";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-administrate-advertisement',
@@ -9,6 +10,8 @@ import {Router} from "@angular/router";
   styleUrls: ['./administrate-advertisement.component.css']
 })
 export class AdministrateAdvertisementComponent implements OnInit {
+
+  private baseUrl = environment.baseUrl
   advertisements: Advertisement[];
   page:number = 0;
   totalPages: number;
@@ -18,7 +21,7 @@ export class AdministrateAdvertisementComponent implements OnInit {
   }
   loadAdvertisement(page:number){
     this.page = page;
-    return this.http.get("http://localhost:8080/advertisement",{
+    return this.http.get(this.baseUrl+"advertisement",{
       params: new HttpParams().append('page', page)
     }).subscribe((res:any)=>{
       this.advertisements = res.content;
@@ -27,7 +30,7 @@ export class AdministrateAdvertisementComponent implements OnInit {
   }
 
   archiveAdvertisement(advertisement:Advertisement) {
-    this.http.delete<Advertisement>("http://localhost:8080/advertisement/" + advertisement.id).subscribe(res=>{
+    this.http.delete<Advertisement>(this.baseUrl+"advertisement/" + advertisement.id).subscribe(res=>{
       const index = this.advertisements.indexOf(advertisement);
       if(~index){
         this.advertisements[index] = res;

@@ -37,21 +37,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDto> deleteUser(@RequestParam Long id){
-        Optional<User> user = userService.deleteUser(id);
-        return user
-            .map(UserDto::fromUser)
-            .map(ResponseEntity::ok)
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ResponseEntity.ok("delete user with id: " + id);
     }
 
     @PatchMapping
-    public ResponseEntity<UserDto> updateUser(@RequestParam UserDto userDto) {
-
-        Optional<User> user = userService.update(userDto.toUser());
-        return user
-            .map(UserDto::fromUser)
-            .map(ResponseEntity::ok)
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        return ResponseEntity
+            .ok(UserDto.fromUser(userService.update(userDto.toUser())));
     }
 }

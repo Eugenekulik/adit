@@ -1,25 +1,33 @@
 <div class="container d-flex justify-content-center">
-  <div class="card col-4 mt-5 bg-opacity-50 bg-secondary align-items-center">
-    <h2>Login</h2>
-    <form #loginForm="ngForm" (ngSubmit)="doLogin(loginForm)"
-          class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
-      <input ngModel class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
-             type="text"
-             name="login"
-             id="login"
-             placeholder="Enter name">
-      <input class="form-control-lg col-12 bg-opacity-50 bg-white mb-3"
-             ngModel
-             type="password"
-             name="password"
-             id="password"
-             placeholder="Enter password">
-      <button class="btn btn-success col-6" type="submit">Login</button>
-    </form>
-    <button type="button" data-bs-target="#registration-modal"
-            class="btn btn-white btn-sm bg-opacity-75 col-8" data-bs-toggle="modal">
-      <span class="h4 text-black">Registration</span>
-    </button>
+  <div class="card mt-5 bg-opacity-50 bg-dark">
+    <div class="card-body">
+      <form #loginForm="ngForm" (ngSubmit)="doLogin(loginForm)"
+            class="bg-opacity-25 d-flex flex-column">
+        <div class="mb-4">
+          <input ngModel class="form-control bg-opacity-50 bg-white"
+                 type="text"
+                 name="login"
+                 id="login"
+                 placeholder="Enter name">
+        </div>
+        <div class="mb-4">
+          <input class="form-control bg-opacity-50 bg-white"
+                 ngModel
+                 type="password"
+                 name="password"
+                 id="password"
+                 placeholder="Enter password">
+        </div>
+        <div>
+          <button class="btn btn-primary" type="submit">Login</button>
+          <a type="button" data-bs-target="#registration-modal"
+             class="btn btn-white btn-sm bg-opacity-75 col-8" data-bs-toggle="modal">
+            <div class="h5 text-dark">Регистрация</div>
+          </a>
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>
 
@@ -32,7 +40,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="registrateForm" (ngSubmit)="registration()"
-              class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center" >
+              class="bg-opacity-25 m-2 col-12 d-flex flex-column align-items-center">
           <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
                  type="text"
                  name="login"
@@ -73,7 +81,7 @@
                  name="phone"
                  id="phone"
                  placeholder="Enter phone" formControlName="phone">
-          <button [disabled]="registrateForm.invalid" class="btn btn-success col-6" type="submit" >Registrate</button>
+          <button [disabled]="registrateForm.invalid" class="btn btn-success col-6" type="submit">Registrate</button>
         </form>
       </div>
       <div class="modal-footer">

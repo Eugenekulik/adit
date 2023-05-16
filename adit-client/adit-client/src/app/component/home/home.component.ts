@@ -4,6 +4,7 @@ import {Category} from "../../domain/category";
 import {faAd} from "@fortawesome/free-solid-svg-icons/faAd";
 import {Advertisement} from "../../domain/advertisement";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons/faArrowLeft";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-home',
@@ -11,6 +12,7 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons/faArrowLeft";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  private baseUrl = environment.baseUrl;
 
   faBack = faArrowLeft;
   faAd = faAd;
@@ -19,7 +21,8 @@ export class HomeComponent implements OnInit {
   parent: Category|null;
 
   advertisements: Advertisement[] = [];
-
+  page = 0;
+  totalPages: number;
   constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
@@ -32,33 +35,37 @@ export class HomeComponent implements OnInit {
   }
   getCategories(parent:Category|null){
     if(parent != null){
-    this.http.get<Category[]>("http://localhost:8080/category/children", {
+    this.http.get<Category[]>(this.baseUrl+"category/children", {
       params: new HttpParams().append('parentId', parent.categoryId.toString())
     }).subscribe(res => {
-      this.categories = res;
+      this.categories = res.sort(this.sortByName);
     });
     this.getAdv(0,parent);
     }else {
-      this.http.get<Category[]>("http://localhost:8080/category/children").subscribe(res => {
-        this.categories = res;
+      this.http.get<Category[]>(this.baseUrl+"category/children").subscribe(res => {
+        this.categories = res.sort(this.sortByName);
       })
       this.advertisements = [];
     }
   }
 
   getAdv(page:number, category:Category){
-    this.http.get("http://localhost:8080/advertisement/category", {
+    this.page =page;
+    this.http.get(this.baseUrl+"advertisement/category", {
       params: new HttpParams()
         .append('categoryId', category.categoryId.toString())
         .append('page', page)
     }).subscribe((res:any)=>{
-      console.log(res);
       this.advertisements = res.content;
+      this.totalPages = res.totalPages;
     })
   }
 
   back() {
     this.parent = this.parent!.parent;
     this.getCategories(this.parent);
+  }
+  sortByName(a: Category, b: Category): number {
+    return a.name<b.name?-1:1
   }
 }

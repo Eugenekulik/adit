@@ -21,6 +21,7 @@ import {
   AdvertisementEditComponent
 } from "./component/administrate/administrate-advertisement/advertisement-edit/advertisement-edit.component";
 import {CreateAdvertisementComponent} from "./component/create-advertisement/create-advertisement.component";
+import {AuthGuard} from "./service/auth.guard";
 
 
 const routes: Routes = [
@@ -28,8 +29,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'about', component: AboutComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'create', component: CreateAdvertisementComponent},
-  {path: 'administrate', component: AdministrateComponent,
+  {path: 'create', component: CreateAdvertisementComponent, canActivate:[AuthGuard],data:{roles:['client']}},
+  {path: 'administrate', component: AdministrateComponent, canActivate:[AuthGuard],data:{roles:['admin']},
     children: [
       {path: 'advertisement', component: AdministrateAdvertisementComponent},
       {path: 'advertisement/edit', component: AdvertisementEditComponent},

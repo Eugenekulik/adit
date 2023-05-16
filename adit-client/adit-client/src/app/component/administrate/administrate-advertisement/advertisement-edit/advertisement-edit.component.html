@@ -1,16 +1,63 @@
-<div class="h2 ms-2">
-  <h2> {{advertisement.name}}</h2>
-</div>
-<div class="d-flex">
-  <ngb-carousel class="w-50 h-50 border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
-    <ng-template ngbSlide *ngFor="let image of advertisement.images">
-      <div class="d-flex align-content-center justify-content-center">
-        <img [src]="image.url" alt="Random first slide" class="m-2 w-auto"
-             style="height: 400px; max-height: 400px">
+<div *ngIf="advertisement" class="bg-info bg-opacity-10 mt-2 mx-1">
+  <div class="d-flex">
+    <div class="col-6">
+      <ngb-carousel [showNavigationIndicators]="false" *ngIf="advertisement.images.length"
+                    class="border-2 border-primary bg-light bg-opacity-10"
+                    style="border-radius: 10%">
+        <ng-template ngbSlide *ngFor="let image of advertisement.images">
+          <div class="col-12 d-flex flex-column justify-content-center flex-wrap">
+            <div class="d-flex justify-content-center flex-wrap align-content-center">
+              <img [src]="image.url" alt="Random first slide" class="adv-image">
+            </div>
+            <div class="d-flex justify-content-center">
+              <button class="btn bg-danger bg-opacity-10 col-6"
+                      (click)="deleteImage(image)"
+              >удалить
+              </button>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+      <div class="d-flex justify-content-center flex-column col-12 mt-2">
+        <label for="image" class="btn bg-success bg-opacity-10 col-12">добавить фото</label>
+        <input type="file" id="image" (change)="addImage($event)" class="">
       </div>
-    </ng-template>
-  </ngb-carousel>
-  <div class="mx-5">
-    <p> {{advertisement.description}}</p>
+    </div>
+    <div class="col-6 p-2">
+      <form [formGroup]="adv" class="col-12 d-flex flex-column justify-content-center">
+        <div class="col-xl-8">
+          <label class="col-12">Название товара</label>
+          <input class="col-12 form-control bg-opacity-50 bg-white" type="text" formControlName="name" >
+        </div>
+        <div class="col-xl-8">
+          <label class="col-12">Описание</label>
+          <textarea class="col-12 form-control bg-opacity-50 bg-white" formControlName="description"></textarea>
+        </div>
+        <div class="col-xl-8">
+          <label class="col-12">Цена</label>
+          <input class="col-12 form-control bg-opacity-50 bg-white" type="number" formControlName="price" >
+        </div>
+        <div class="col-xl-8">
+          <label class="col-12">Статус</label>
+          <select class="col-12 bg-opacity-50 bg-white form-select"  formControlName="status">
+            <option value="1" class="bg-opacity-50 bg-white">в обработке</option>
+            <option value="2" class="bg-opacity-50 bg-white">активный</option>
+            <option value="3" class="bg-opacity-50 bg-white">в архиве</option>
+          </select>
+        </div>
+      </form>
+    </div>
   </div>
+  <div class="p-3">
+    <h2>Характеристики</h2>
+    <div>
+      <div *ngFor="let feature of advertisement.features; let i = index" class="col-6">
+        <div>{{feature.name}}</div>
+        <input value="{{feature.value}}" (change)="updateFeature(i, $event)" class="form-control bg-opacity-50 bg-white">
+      </div>
+    </div>
+
+  </div>
+  <button class="btn btn-primary col-12" (click)="saveAdvertisement()">Сохранить изменения</button>
 </div>
+

@@ -14,7 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "@fortawesome/free-solid-svg-icons/faSearch"
+              "@fortawesome/free-solid-svg-icons/*"
             ],
             "outputPath": "dist/adit-client",
             "index": "src/index.html",

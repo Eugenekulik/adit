@@ -31,7 +31,7 @@ public class AddressController {
   }
 
   @PatchMapping
-  public ResponseEntity<Address> updateAddress(@RequestParam Address address){
+  public ResponseEntity<Address> updateAddress(@RequestBody Address address){
     return ResponseEntity.ok(addressService.updateAddress(address));
   }
 

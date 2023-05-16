@@ -22,8 +22,9 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req.clone());
     }
     const token = this.authorization.getToken();
-    req = this.addToken(req, token);
-    console.log(req)
+    if(token != null) {
+      req = this.addToken(req, token);
+    }else req = this.cross(req);
     return next.handle(req).pipe(
       catchError((err:HttpErrorResponse)=>{
           console.log(err.status);
@@ -44,5 +45,13 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       }
     )
+  }
+
+  private cross(req: HttpRequest<any>) {
+    return req.clone({
+      setHeaders:{
+        'Access-Control-Allow-Origin':'true'
+      }
+    });
   }
 }

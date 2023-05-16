@@ -2,6 +2,7 @@ package by.bntu.eugenekulik.adit.service;
 
 import by.bntu.eugenekulik.adit.dao.CategoryRepository;
 import by.bntu.eugenekulik.adit.dao.FeatureRepository;
+import by.bntu.eugenekulik.adit.dto.CategoryDto;
 import by.bntu.eugenekulik.adit.entity.Category;
 import by.bntu.eugenekulik.adit.entity.Feature;
 import org.springframework.data.domain.Page;
@@ -31,8 +32,12 @@ public class CategoryService {
     return categoryRepository.save(category);
   }
 
-  public Category findCategoryByName(String parent) {
-    return categoryRepository.findByName(parent);
+  public Category findCategoryByName(String name) {
+    return categoryRepository.findByName(name);
+  }
+
+  public Page<Category> searchByName(String words, Integer page){
+    return categoryRepository.findByNameContains(words, PageRequest.of(page, 10));
   }
 
   public Category createCategory(Category category) {
@@ -65,5 +70,10 @@ public class CategoryService {
           category -> children.addAll(categoryRepository.findByParent(category)));
     } else children.addAll(categoryRepository.findByParent(null));
     return children;
+  }
+
+  public Category updateCategory(Category category) {
+    if(category.getCategoryId()==null) throw new RuntimeException("categoryId could not be null");
+    return categoryRepository.save(category);
   }
 }

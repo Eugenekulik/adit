@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,22 +48,38 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Optional<User> deleteUser(Long id) {
-    User user = userRepository.deleteUserByUserId(id);
-    return Optional.ofNullable(user);
+  public void deleteUser(Long id) {
+    userRepository.deleteById(id);
   }
 
   @Override
-  public Optional<User> update(User user) {
-    user = userRepository.save(user);
-    return Optional.ofNullable(user);
+  public User update(final User user) {
+    user.setRoles(user.getRoles().stream()
+        .map(Role::getRoleId)
+        .map(roleRepository::findById)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .toList());
+    user.setPassword(userRepository
+        .findById(user.getUserId())
+        .orElseThrow(
+            ()->new RuntimeException("cat't find and update user with id: " + user.getUserId()))
+        .getPassword());
+    userRepository.save(user);
+    return user;
   }
 
   @Override
   public  Optional<User> create(User user){
     user.setPassword(encoder.encode(user.getPassword()));
+    user.setRoles(user.getRoles().stream()
+        .map(Role::getRoleId)
+        .map(roleRepository::findById)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .toList());
     Role role = roleRepository.findByName("client");
-    user.getRoles().add(role);
+    user.setRoles(List.of(role));
     user = userRepository.save(user);
     return Optional.ofNullable(user);
   }

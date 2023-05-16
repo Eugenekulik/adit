@@ -1,39 +1,72 @@
 <div class="container-fluid h-75">
-  <div>
+  <div style="min-height: 600px" class="table-responsive">
     <table class="table table-hover">
       <thead>
       <tr>
-        <th>country</th>
-        <th>region</th>
-        <th>city</th>
-        <th>part</th>
+        <th>Страна</th>
+        <th>Область</th>
+        <th>Город</th>
+        <th>Район</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let address of addresses">
+      <tr *ngFor="let address of addresses" (click)="open(content,address)">
         <td>{{address.country}}</td>
         <td>{{address.region}}</td>
         <td>{{address.city}}</td>
         <td>{{address.part}}</td>
         <td>
           <button class="btn btn-warning" (click)="deleteAddress(address)">
-            Archive
+            В архив
           </button>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <ul class="pagination position-absolute bottom-0">
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAddresses(page-1)">Previous</a></li>
-    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-2)">{{page - 1}}</a></li>
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAddresses(page-1)">{{page}}</a></li>
+  <ul class="pagination position-relative">
+    <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getAddresses(0)">1</a></li>
+    <li disabled="true" *ngIf="page>3" class="page-item"><a class="page-link">. . .</a></li>
+    <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getAddresses(page-2)">{{page - 1}}</a></li>
+    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-1)">{{page}}</a></li>
     <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAddresses(page+1)">{{page + 2}}</a>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+1)">{{page + 2}}</a>
     </li>
-    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+2)">{{page + 3}}</a>
+    <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link" (click)="getAddresses(page+2)">{{page + 3}}</a>
     </li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAddresses(page+1)">Next</a></li>
+    <li disabled="true" *ngIf="page<totalPages-4" class="page-item"><a class="page-link">. . .</a></li>
+    <li class="page-item" *ngIf="page!=totalPages-1"><a class="page-link"
+                                                        (click)="getAddresses(totalPages-1)">{{totalPages}}</a></li>
   </ul>
 </div>
+
+
+<ng-template #content let-modal class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Адрес</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="current" (ngSubmit)="updateAddress(modal)">
+        <label for="country">Страна</label>
+        <input type="text" name="country" id="country" formControlName="country"
+               class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+        <label for="region">Область</label>
+        <input type="text" name="region" id="region" formControlName="region"
+               class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+        <label for="city">Город</label>
+        <input type="text" name="city" id="city" formControlName="city"
+               class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+        <label for="part">Район</label>
+        <input type="text" name="part" id="part" formControlName="part"
+               class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+        <input type="hidden" formControlName="addressId">
+        <div class="d-flex justify-content-end">
+          <input type="submit" value="обновить" class="btn btn-warning end-0">
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>

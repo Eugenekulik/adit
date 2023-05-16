@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   faOut = faSignOutAlt;
   advertisements: Advertisement[] = [];
   words: string = '';
+  isMenuCollapse = true;
   constructor(public authorizationService:AuthorizationService,
               private router:Router) {}
   ngOnInit(): void {

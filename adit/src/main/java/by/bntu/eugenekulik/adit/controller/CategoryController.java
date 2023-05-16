@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -45,24 +46,28 @@ public class CategoryController {
   }
 
 
-  @GetMapping
-  public Iterable<CategoryDto> getPage(@RequestParam Integer page){
-    Page<Category> result = service.getPage(page);
-    return new PageImpl<>(result.stream()
-        .map(CategoryDto::fromCategory)
-        .toList(), PageRequest.of(page,10),result.getTotalElements());
+  @PatchMapping
+  public ResponseEntity<Category> updateCategory(@RequestBody Category category){
+    return ResponseEntity
+        .ok(service.updateCategory(category));
+  }
+
+
+  @GetMapping("/page")
+  public Iterable<Category> getPage(@RequestParam Integer page){
+    return service.getPage(page);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<CategoryDto> findCategory(@PathVariable Long id){
-    return service.findById(id).map(CategoryDto::fromCategory)
+  public ResponseEntity<Category> findCategory(@PathVariable Long id){
+    return service.findById(id)
         .map(ResponseEntity::ok)
         .orElse(new ResponseEntity<>(null,HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<CategoryDto> deleteCategory(@PathVariable Long id){
-    return service.deleteCategory(id).map(CategoryDto::fromCategory)
+  public ResponseEntity<Category> deleteCategory(@PathVariable Long id){
+    return service.deleteCategory(id)
         .map(ResponseEntity::ok)
         .orElse(new ResponseEntity<>(null,HttpStatus.NOT_FOUND));
   }
@@ -70,5 +75,12 @@ public class CategoryController {
   @PatchMapping("/feature/delete")
   public ResponseEntity<Category> deleteFeature(@RequestBody CategoryFeature temp) {
     return new ResponseEntity<>(service.deleteFeature(temp.featureId, temp.categoryId), HttpStatus.OK);
+  }
+
+  @GetMapping("/search")
+  public Iterable<Category> findByName(@RequestParam String words, @RequestParam(required = false) Integer page){
+    page = page==null?0:page;
+    return service.searchByName(words,page);
+
   }
 }

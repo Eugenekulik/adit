@@ -68,4 +68,8 @@ public class ImageService {
     Path filePath = fileStorageLocation.resolve(fileName).normalize();
     return new UrlResource(filePath.toUri());
   }
+
+  public void deleteImage(Long id) {
+    imageRepository.deleteById(id);
+  }
 }

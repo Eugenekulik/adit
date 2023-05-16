@@ -2,6 +2,7 @@ import {User} from "./user";
 import {Feature} from "./feature";
 import {Image} from "./image";
 import { Category } from "./category";
+import {Address} from "./address";
 
 
 export interface Advertisement {
@@ -15,6 +16,7 @@ export interface Advertisement {
   user: User;
   price: number;
 
-  categories: Category;
+  address: Address;
+  category: Category;
   features: Feature[];
 }

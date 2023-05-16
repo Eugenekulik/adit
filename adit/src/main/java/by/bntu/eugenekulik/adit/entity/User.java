@@ -42,7 +42,7 @@ public class User {
   @Pattern(regexp = "\\+\\d+")
   @Size(min = 13, max = 13)
   private String phone;
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
   @JoinTable(
       name = "user_role",
       joinColumns = @JoinColumn(name = "user_id"),

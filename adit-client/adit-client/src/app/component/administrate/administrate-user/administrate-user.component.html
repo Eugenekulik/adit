@@ -1,39 +1,87 @@
 <div class="container-fluid">
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>login</th>
-      <th>first name</th>
-      <th>last name</th>
-      <th>age</th>
-      <th>phone</th>
-      <th>email</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{user.login}}</td>
-      <td>{{user.firstName}}</td>
-      <td>{{user.lastName}}</td>
-      <td>{{user.age}}</td>
-      <td>{{user.phone}}</td>
-      <td>{{user.email}}</td>
-      <td>
-        <button class="btn btn-danger" (click)="deleteUser(user)">
-          Delete
-        </button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div style="height: 600px">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>имя пользователя</th>
+        <th>имя</th>
+        <th>фамилия</th>
+        <th>дата рождения</th>
+        <th>телефон</th>
+        <th>электронная почта</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users" (click)="open(content,user)">
+        <td>{{user.login}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.age}}</td>
+        <td>{{user.phone}}</td>
+        <td>{{user.email}}</td>
+        <td>
+          <button *ngIf="!isAdmin(user)" class="btn btn-danger" (click)="deleteUser(user)">
+            удалить
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
   <ul class="pagination">
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getUsers(page-1)">Previous</a></li>
-    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getUsers(page-2)">{{page-1}}</a></li>
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getUsers(page-1)">{{page}}</a></li>
-    <li disabled="true" class="page-item"><a class="page-link">{{page+1}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getUsers(page+1)">{{page+2}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getUsers(page+2)">{{page+3}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getUsers(page+1)">Next</a></li>
+    <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getUsers(0)">1</a></li>
+    <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getUsers(page-2)">{{page - 1}}</a></li>
+    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getUsers(page-1)">{{page}}</a></li>
+    <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getUsers(page+1)">{{page + 2}}</a>
+    </li>
+    <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link" (click)="getUsers(page+2)">{{page + 3}}</a>
+    </li>
+    <li class="page-item" *ngIf="page!=totalPages-1"><a class="page-link" (click)="getUsers(page+1)">{{totalPages}}</a>
+    </li>
   </ul>
 </div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Редактирование пользователя</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="updateUser(modal)">
+      <label for="login">имя пользователя</label>
+      <input type="text" name="login" id="login" formControlName="login"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label for="firstName">Имя</label>
+      <input type="text" name="firstName" id="firstName" formControlName="firstName"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label for="lastName">Фамилия</label>
+      <input type="text" name="lastName" id="lastName" formControlName="lastName"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label for="email">Электронная почта</label>
+      <input type="email" name="email" id="email" formControlName="email"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label for="age">Дата рождения</label>
+      <input type="date" name="age" id="age" formControlName="age"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label for="phone">Телефон</label>
+      <input type="text" name="phone" id="phone" formControlName="phone"
+             class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
+      <label>Роли</label>
+      <div class="row">
+        <div *ngFor="let role of allRoles" class="col-4">
+          <input class="col-3 bg-opacity-50 bg-white" value="{{role.roleId}}" name="{{role.name}}"
+                 formArrayName="roles" type="checkbox" (change)="onCheckChange($event)"
+                 [checked]="checkedDef(role)">
+          <label class="col-9 h6 bg-opacity-50 bg-white">{{role.name}}</label>
+        </div>
+      </div>
+      <input type="hidden" formControlName="id">
+      <div class="d-flex justify-content-end">
+        <input type="submit" value="обновить" class="btn btn-warning end-0">
+      </div>
+    </form>
+  </div>
+</ng-template>

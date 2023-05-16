@@ -25,7 +25,8 @@ public class RoleController {
   }
 
   @GetMapping
-  public Iterable<Role> getRoles(@RequestParam Integer page){
+  public Iterable<Role> getRoles(@RequestParam(required = false) Integer page){
+    if(page == null) page =0;
     return roleService.getRoles(page);
   }
 

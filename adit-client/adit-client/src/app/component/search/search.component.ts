@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Advertisement} from "../../domain/advertisement";
 import {ActivatedRoute} from "@angular/router";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-search',
@@ -9,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-
+  private baseUrl = environment.baseUrl;
   page = 0;
   totalPages: number;
   set words(value: string) {
@@ -36,7 +37,7 @@ export class SearchComponent implements OnInit {
     })
   }
   find(){
-    return this.http.get("http://localhost:8080/search",{
+    return this.http.get(this.baseUrl+"search",{
       params: new HttpParams()
         .append("words",this._words)
         .append('page', this.page)

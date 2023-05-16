@@ -14,10 +14,12 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
 
   Set<Category> findByParent(Category category);
 
-  Category findByName(String parent);
+  Category findByName(String name);
 
   Page<Category> findAll(Pageable page);
 
   Optional<Category> deleteByCategoryId(Long id);
+
+  Page<Category> findByNameContains(String words, Pageable pageable);
 
 }

@@ -12,9 +12,9 @@ public interface UserService {
 
   User authorize(String username, String password);
 
-  Optional<User> deleteUser(Long id);
+  void deleteUser(Long id);
 
-  Optional<User> update(User user);
+  User update(User user);
 
   Optional<User> create(User user);
 }

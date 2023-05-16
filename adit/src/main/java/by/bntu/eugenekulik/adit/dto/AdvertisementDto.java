@@ -39,7 +39,7 @@ public class AdvertisementDto {
     advertisement.setUser(this.user.toUser());
     advertisement.setStatus(this.status);
     advertisement.setAddress(this.address);
-    advertisement.setCategory(this.category.toCategory());
+    advertisement.setCategory(category!=null?this.category.toCategory():null);
     advertisement.setName(this.name);
     advertisement.setDescription(this.description);
     advertisement.setPrice(this.price);
