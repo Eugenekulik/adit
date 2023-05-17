@@ -1,4 +1,4 @@
-<div class="container-fluid h-75">
+<div class="container-fluid">
   <div style="min-height: 600px" class="table-responsive">
     <table class="table table-hover">
       <thead>
@@ -17,28 +17,35 @@
         <td>{{address.city}}</td>
         <td>{{address.part}}</td>
         <td>
-          <button class="btn btn-warning" (click)="deleteAddress(address)">
-            В архив
+          <button class="btn btn-danger" (click)="deleteAddress(address)">
+            удалить
           </button>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <ul class="pagination position-relative">
-    <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getAddresses(0)">1</a></li>
-    <li disabled="true" *ngIf="page>3" class="page-item"><a class="page-link">. . .</a></li>
-    <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getAddresses(page-2)">{{page - 1}}</a></li>
-    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-1)">{{page}}</a></li>
-    <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+1)">{{page + 2}}</a>
-    </li>
-    <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link" (click)="getAddresses(page+2)">{{page + 3}}</a>
-    </li>
-    <li disabled="true" *ngIf="page<totalPages-4" class="page-item"><a class="page-link">. . .</a></li>
-    <li class="page-item" *ngIf="page!=totalPages-1"><a class="page-link"
-                                                        (click)="getAddresses(totalPages-1)">{{totalPages}}</a></li>
-  </ul>
+  <div class="d-flex">
+    <div class="col-9">
+      <ul class="pagination position-relative m-0">
+        <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getAddresses(0)">1</a></li>
+        <li disabled="true" *ngIf="page>3" class="page-item"><a class="page-link">. . .</a></li>
+        <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getAddresses(page-2)">{{page - 1}}</a></li>
+        <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAddresses(page-1)">{{page}}</a></li>
+        <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
+        <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getAddresses(page+1)">{{page + 2}}</a>
+        </li>
+        <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link" (click)="getAddresses(page+2)">{{page + 3}}</a>
+        </li>
+        <li disabled="true" *ngIf="page<totalPages-4" class="page-item"><a class="page-link">. . .</a></li>
+        <li class="page-item" *ngIf="page!=totalPages-1"><a class="page-link"
+                                                            (click)="getAddresses(totalPages-1)">{{totalPages}}</a></li>
+      </ul>
+    </div>
+    <div class="d-flex justify-content-end col-2">
+      <button [routerLink]="'/address/create'" class="btn btn-sm btn-success">Добавить</button>
+    </div>
+  </div>
 </div>
 
 

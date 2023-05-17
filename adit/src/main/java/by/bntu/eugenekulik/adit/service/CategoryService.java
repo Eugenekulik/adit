@@ -2,7 +2,6 @@ package by.bntu.eugenekulik.adit.service;
 
 import by.bntu.eugenekulik.adit.dao.CategoryRepository;
 import by.bntu.eugenekulik.adit.dao.FeatureRepository;
-import by.bntu.eugenekulik.adit.dto.CategoryDto;
 import by.bntu.eugenekulik.adit.entity.Category;
 import by.bntu.eugenekulik.adit.entity.Feature;
 import org.springframework.data.domain.Page;
@@ -37,7 +36,7 @@ public class CategoryService {
   }
 
   public Page<Category> searchByName(String words, Integer page){
-    return categoryRepository.findByNameContains(words, PageRequest.of(page, 10));
+    return categoryRepository.findByNameContainsOrderByNameAsc(words, PageRequest.of(page, 10));
   }
 
   public Category createCategory(Category category) {
@@ -45,15 +44,15 @@ public class CategoryService {
   }
 
   public Page<Category> getPage(Integer page) {
-    return categoryRepository.findAll(PageRequest.of(page, 10));
+    return categoryRepository.findAllByOrderByNameAsc(PageRequest.of(page, 10));
   }
 
   public Optional<Category> findById(Long id) {
     return categoryRepository.findById(id);
   }
 
-  public Optional<Category> deleteCategory(Long id) {
-    return categoryRepository.deleteByCategoryId(id);
+  public void deleteCategory(Long id) {
+    categoryRepository.deleteById(id);
   }
 
   public Category deleteFeature(Long featureId, Long categoryId) {
@@ -67,8 +66,8 @@ public class CategoryService {
     Set<Category> children = new HashSet<>();
     if(parentId != null) {
       categoryRepository.findById(parentId).ifPresent(
-          category -> children.addAll(categoryRepository.findByParent(category)));
-    } else children.addAll(categoryRepository.findByParent(null));
+          category -> children.addAll(categoryRepository.findByParentOrderByNameAsc(category)));
+    } else children.addAll(categoryRepository.findByParentOrderByNameAsc(null));
     return children;
   }
 

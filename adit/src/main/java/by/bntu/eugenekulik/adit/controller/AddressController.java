@@ -43,7 +43,7 @@ public class AddressController {
 
 
   @PostMapping
-  public ResponseEntity<Address> createAddress(@RequestParam Address address){
+  public ResponseEntity<Address> createAddress(@RequestBody Address address){
     return ResponseEntity.ok(addressService.createAddress(address));
   }
 

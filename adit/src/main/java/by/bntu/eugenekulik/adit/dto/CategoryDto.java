@@ -3,7 +3,9 @@ package by.bntu.eugenekulik.adit.dto;
 import by.bntu.eugenekulik.adit.entity.Category;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.mapping.Collection;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,12 +16,15 @@ public class CategoryDto {
     private String name;
     private Set<FeatureDto> features;
 
+    private Category parent;
+
     public static CategoryDto fromCategory(Category category){
       if(category == null) return null;
       return CategoryDto.builder()
           .categoryId(category.getCategoryId())
           .features(getFeatures(category))
           .name(category.getName())
+          .parent(category.getParent())
           .build();
     }
 
@@ -36,9 +41,12 @@ public class CategoryDto {
     Category category = new Category();
     category.setCategoryId(categoryId);
     category.setName(name);
-    category.setFeatures(features.stream()
-        .map(FeatureDto::toFeature)
-        .collect(Collectors.toSet()));
+    if(features != null) {
+      category.setFeatures(features.stream()
+          .map(FeatureDto::toFeature)
+          .collect(Collectors.toSet()));
+    }else category.setFeatures(Collections.emptySet());
+    category.setParent(parent);
     return category;
   }
 }

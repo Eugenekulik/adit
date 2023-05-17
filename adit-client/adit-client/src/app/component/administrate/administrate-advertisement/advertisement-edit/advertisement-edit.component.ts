@@ -12,7 +12,7 @@ import {environment} from "../../../../../environments/environment";
   styleUrls: ['./advertisement-edit.component.css']
 })
 export class AdvertisementEditComponent implements OnInit {
-  private baseUrl = environment.baseUrl;
+  baseUrl = environment.baseUrl;
   faTimes = faTimes
 
   adv = new FormGroup({

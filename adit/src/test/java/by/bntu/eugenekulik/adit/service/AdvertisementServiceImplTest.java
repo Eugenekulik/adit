@@ -7,12 +7,10 @@ import static org.mockito.Mockito.*;
 import by.bntu.eugenekulik.adit.dao.AdvertisementRepository;
 import by.bntu.eugenekulik.adit.dao.CategoryRepository;
 import by.bntu.eugenekulik.adit.entity.Advertisement;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -40,14 +38,14 @@ public class AdvertisementServiceImplTest {
     // Arrange
     int page = 0;
     Page<Advertisement> expectedPage = mock(Page.class);
-    when(advertisementRepository.findAll(PageRequest.of(page, 10))).thenReturn(expectedPage);
+    when(advertisementRepository.findAllByOrderByNameAsc(PageRequest.of(page, 10))).thenReturn(expectedPage);
 
     // Act
     Page<Advertisement> result = advertisementService.getPage(page);
 
     // Assert
     assertEquals(expectedPage, result);
-    verify(advertisementRepository).findAll(PageRequest.of(page, 10));
+    verify(advertisementRepository).findAllByOrderByNameAsc(PageRequest.of(page, 10));
   }
 
   @Test

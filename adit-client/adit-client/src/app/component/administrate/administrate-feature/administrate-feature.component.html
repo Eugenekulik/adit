@@ -1,17 +1,23 @@
 <div class="container-fluid">
-  <div style="min-height: 600px; min-width: 500px" class="table-responsive">
+  <div style="min-height: 600px" class="table-responsive">
     <table class="table table-hover">
       <thead>
       <tr>
         <th>название</th>
-        <th>описание</th>
+        <th class="col-4 col-lg-6">описание</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let feature of features" (click)="openFeatureModal(content,feature)">
         <td>{{feature.name}}</td>
-        <td class="overflow-hidden col-5">{{feature.description}}</td>
+        <td  style="
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;">
+          {{feature.description}}
+        </td>
         <td>
           <button class="btn btn-danger" (click)="deleteFeature(feature)">
             удалить
@@ -21,17 +27,25 @@
       </tbody>
     </table>
   </div>
-  <ul class="pagination">
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getFeatures(page-1)">Previous</a></li>
-    <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getFeatures(page-2)">{{page - 1}}</a></li>
-    <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getFeatures(page-1)">{{page}}</a></li>
-    <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getFeatures(page+1)">{{page + 2}}</a>
-    </li>
-    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getFeatures(page+2)">{{page + 3}}</a>
-    </li>
-    <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getFeatures(page+1)">Next</a></li>
-  </ul>
+  <div class="d-flex">
+    <div class="col-10">
+      <ul class="pagination position-relative m-0">
+        <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getFeatures(page-1)">Previous</a></li>
+        <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getFeatures(page-2)">{{page - 1}}</a></li>
+        <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getFeatures(page-1)">{{page}}</a></li>
+        <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
+        <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getFeatures(page+1)">{{page + 2}}</a>
+        </li>
+        <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link" (click)="getFeatures(page+2)">{{page + 3}}</a>
+        </li>
+        <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getFeatures(page+1)">Next</a></li>
+      </ul>
+    </div>
+    <div class="d-flex justify-content-end col-2">
+      <button [routerLink]="'/feature/create'" class="btn btn-sm btn-success">Добавить</button>
+    </div>
+  </div>
+
 </div>
 
 

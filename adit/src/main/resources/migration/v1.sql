@@ -79,7 +79,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `adit`.`address` ;
 
 CREATE TABLE IF NOT EXISTS `adit`.`address` (
-  `address_id` INT NOT NULL,
+  `address_id` INT NOT NULL AUTO_INCREMENT,
   `country` VARCHAR(45) NULL,
   `region` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,

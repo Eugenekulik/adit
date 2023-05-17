@@ -12,14 +12,13 @@ import java.util.Set;
 @Repository
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
-  Set<Category> findByParent(Category category);
+  Set<Category> findByParentOrderByNameAsc(Category category);
 
   Category findByName(String name);
 
-  Page<Category> findAll(Pageable page);
+  Page<Category> findAllByOrderByNameAsc(Pageable page);
 
-  Optional<Category> deleteByCategoryId(Long id);
 
-  Page<Category> findByNameContains(String words, Pageable pageable);
+  Page<Category> findByNameContainsOrderByNameAsc(String words, Pageable pageable);
 
 }

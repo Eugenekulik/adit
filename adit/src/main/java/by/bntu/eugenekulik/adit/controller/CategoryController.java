@@ -25,62 +25,70 @@ public class CategoryController {
 
 
   @GetMapping("/children")
-  public Iterable<Category> getChildren(@RequestParam(required = false) Long parentId){
-    return service.findChildren(parentId);
+  public Iterable<CategoryDto> getChildren(@RequestParam(required = false) Long parentId){
+    return service.findChildren(parentId).stream()
+        .map(CategoryDto::fromCategory)
+        .collect(Collectors.toSet());
   }
 
   @PostMapping
-  public ResponseEntity<Category> createCategory(@RequestParam String name, @RequestParam(required = false) String parentName) {
-    Category category = new Category();
-    category.setName(name);
-    if (parentName != null) {
-      Category parent = service.findCategoryByName(parentName);
-      category.setParent(parent);
-    }
-    return new ResponseEntity<>(service.createCategory(category), HttpStatus.CREATED);
+  public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto category) {
+    return new ResponseEntity<>(CategoryDto.fromCategory(
+        service.createCategory(category.toCategory())),
+        HttpStatus.CREATED);
   }
   record CategoryFeature(Long categoryId, Long featureId){}
   @PatchMapping("/feature/add")
-  public ResponseEntity<Category> addFeature(@RequestBody CategoryFeature temp) {
-    return new ResponseEntity<>(service.addFeatureToCategory(temp.featureId, temp.categoryId), HttpStatus.OK);
+  public ResponseEntity<CategoryDto> addFeature(@RequestBody CategoryFeature temp) {
+    return new ResponseEntity<>(CategoryDto.fromCategory(
+        service.addFeatureToCategory(temp.featureId, temp.categoryId)),
+        HttpStatus.OK);
   }
 
 
   @PatchMapping
-  public ResponseEntity<Category> updateCategory(@RequestBody Category category){
+  public ResponseEntity<CategoryDto> updateCategory(@RequestBody Category category){
     return ResponseEntity
-        .ok(service.updateCategory(category));
+        .ok(CategoryDto.fromCategory(service.updateCategory(category)));
   }
 
 
   @GetMapping("/page")
-  public Iterable<Category> getPage(@RequestParam Integer page){
-    return service.getPage(page);
+  public Iterable<CategoryDto> getPage(@RequestParam Integer page){
+    Page<Category> result = service.getPage(page);
+    return new PageImpl<>(result
+        .map(CategoryDto::fromCategory)
+        .toList(),PageRequest.of(page,10),result.getTotalElements());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Category> findCategory(@PathVariable Long id){
+  public ResponseEntity<CategoryDto> findCategory(@PathVariable Long id){
     return service.findById(id)
+        .map(CategoryDto::fromCategory)
         .map(ResponseEntity::ok)
         .orElse(new ResponseEntity<>(null,HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Category> deleteCategory(@PathVariable Long id){
-    return service.deleteCategory(id)
-        .map(ResponseEntity::ok)
-        .orElse(new ResponseEntity<>(null,HttpStatus.NOT_FOUND));
+  public ResponseEntity<String> deleteCategory(@PathVariable Long id){
+    service.deleteCategory(id);
+    return ResponseEntity.ok("delete category with id: " + id);
   }
 
   @PatchMapping("/feature/delete")
-  public ResponseEntity<Category> deleteFeature(@RequestBody CategoryFeature temp) {
-    return new ResponseEntity<>(service.deleteFeature(temp.featureId, temp.categoryId), HttpStatus.OK);
+  public ResponseEntity<CategoryDto> deleteFeature(@RequestBody CategoryFeature temp) {
+    return new ResponseEntity<>(CategoryDto.fromCategory(
+        service.deleteFeature(temp.featureId, temp.categoryId)),
+        HttpStatus.OK);
   }
 
   @GetMapping("/search")
-  public Iterable<Category> findByName(@RequestParam String words, @RequestParam(required = false) Integer page){
+  public Iterable<CategoryDto> findByName(@RequestParam String words, @RequestParam(required = false) Integer page){
     page = page==null?0:page;
-    return service.searchByName(words,page);
+    Page<Category> result = service.searchByName(words,page);
+    return new PageImpl<>(result
+        .map(CategoryDto::fromCategory)
+        .toList(),PageRequest.of(page,10),result.getTotalElements());
 
   }
 }

@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  private baseUrl = environment.baseUrl;
+  baseUrl = environment.baseUrl;
   page = 0;
   totalPages: number;
   set words(value: string) {

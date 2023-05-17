@@ -24,7 +24,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
   }
   @Override
   public Page<Advertisement> getPage(int page) {
-    return advertisementRepository.findAll(PageRequest.of(page, 10));
+    return advertisementRepository.findAllByOrderByNameAsc(PageRequest.of(page, 10));
   }
   @Override
   public Advertisement save(Advertisement advertisement) {
@@ -56,7 +56,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
   @Transactional
   public Page<Advertisement> search(String words, Integer page) {
     return advertisementRepository
-        .findByNameContainsIgnoreCase(words, PageRequest.of(page, 10));
+        .findByNameContainsIgnoreCaseOrderByNameAsc(words, PageRequest.of(page, 10));
   }
   @Override
   public Page<Advertisement> getByCategory(Long categoryId, Integer page) {
@@ -67,7 +67,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             .toArray(), PageRequest.of(page, 10));
   }
   public Set<Category> recurciveChildren(Category category) {
-    Set<Category> categories = categoryRepository.findByParent(category);
+    Set<Category> categories = categoryRepository.findByParentOrderByNameAsc(category);
     categories.add(category);
     return categories;
   }

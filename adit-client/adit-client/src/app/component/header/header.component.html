@@ -15,12 +15,8 @@
           <a class="navbar-link btn btn-outline-dark m-2 flex-fill" aria-current="page"
              [routerLink]="'/home'">Главная</a>
         </li>
-        <li class="navbar-item d-flex justify-content-center">
-          <a class="navbar-link btn btn-outline-dark  m-2 flex-fill" aria-current="page"
-             [routerLink]="'/home'">Orders</a>
-        </li>
         <li class="navbar-item d-flex justify-content-center" *ngIf="authorizationService.roleMatch(['admin'])">
-          <a class="navbar-link btn btn-outline-dark m-2 flex-fill" aria-current="page" [routerLink]="'/administrate'">Administration</a>
+          <a class="navbar-link btn btn-outline-dark m-2 flex-fill" aria-current="page" [routerLink]="'/administrate'">Администрирование</a>
         </li>
         <li class="navbar-item d-flex justify-content-center">
           <a class="navbar-link btn btn-outline-dark m-2 flex-fill" aria-current="page" [routerLink]="'/about'">О
@@ -30,14 +26,14 @@
       <div class="d-flex me-4 justify-content-center">
         <div class="form-outline">
           <input [(ngModel)]="words" (change)="searchAdvertisement()" type="search" id="form1" class="form-control"
-                 placeholder="Search"/>
+                 placeholder="Поиск"/>
         </div>
         <button type="button" class="btn btn-primary" (click)="searchAdvertisement()">
           <fa-icon [icon]="faSearch"></fa-icon>
         </button>
-        <button *ngIf="authorizationService.isSignIn()" class="btn btn-success btn-sm add-button mx-3"
-                [routerLink]="'/create'">
-          NEW
+        <button *ngIf="authorizationService.roleMatch(['client'])" class="btn btn-success btn-sm add-button mx-3"
+                [routerLink]="'/advertisement/create'">
+          Создать
         </button>
         <div class="d-flex justify-content-end">
           <button *ngIf="!authorizationService.isSignIn()" class="btn btn-outline-dark top-0" [routerLink]="'/login'">

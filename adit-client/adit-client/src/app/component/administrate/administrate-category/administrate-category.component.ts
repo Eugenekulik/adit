@@ -97,6 +97,7 @@ export class AdministrateCategoryComponent implements OnInit {
     return this.http.get(this.baseUrl+"category/page", {
       params: new HttpParams().append('page', page)
     }).subscribe((res:any) =>{
+      console.log(res);
       this.categories = res.content;
       this.totalCategoryPages = res.totalPages;
     });
@@ -107,9 +108,7 @@ export class AdministrateCategoryComponent implements OnInit {
     if (index > -1) {
       this.categories.splice(index, 1);
     }
-    this.http.delete(this.baseUrl+"category/" + category.categoryId).subscribe(res=>{
-      console.log(res);
-    });
+    this.http.delete(this.baseUrl+"category/" + category.categoryId).subscribe();
   }
 
 

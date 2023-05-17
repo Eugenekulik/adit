@@ -1,6 +1,6 @@
 <div class="container-fluid">
-  <div style="height: 600px">
-    <table class="table table-hover table-responsive">
+  <div style="min-height: 600px" class="table-responsive">
+    <table class="table table-hover">
       <thead>
       <tr>
         <th>наименование товара</th>
@@ -14,7 +14,7 @@
       <tbody>
       <tr *ngFor="let advertisement of advertisements" (click)="getAdvertisement(advertisement)">
         <td>{{advertisement.name}}</td>
-        <td>{{advertisement.placedAt | date:'medium'}}</td>
+        <td>{{advertisement.placedAt | date: 'medium'}}</td>
         <td>{{advertisement.price}}</td>
         <td>{{advertisement.status | advStatus}}</td>
         <td>{{advertisement.user.firstName}} {{advertisement.user.lastName}}</td>
@@ -27,7 +27,7 @@
       </tbody>
     </table>
   </div>
-  <ul class="pagination">
+  <ul class="pagination position-relative m-0">
     <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="loadAdvertisement(page-1)">Previous</a></li>
     <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="loadAdvertisement(page-2)">{{page - 1}}</a></li>
     <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="loadAdvertisement(page-1)">{{page}}</a></li>

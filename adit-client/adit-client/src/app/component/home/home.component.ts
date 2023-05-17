@@ -12,7 +12,7 @@ import {environment} from "../../../environments/environment";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private baseUrl = environment.baseUrl;
+  baseUrl = environment.baseUrl;
 
   faBack = faArrowLeft;
   faAd = faAd;
