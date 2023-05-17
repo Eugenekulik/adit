@@ -13,7 +13,7 @@ input[type="file"]{
   }
 }
 
-@media (min-width: 576px) {
+@media (min-width: 0px) {
   .adv-image {
     height: 216px;
     width: 288px;

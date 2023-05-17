@@ -1,4 +1,3 @@
-/* Features for computer technologies*/
 insert into feature(feature_id, name, description)
 values (1,'Процессор', 'Центральный процессор играет важнейшую роль в вычислительной системе.
     Это его ядро, производящее вычисления, выполняет обработку входящей информации и

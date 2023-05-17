@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AddressRepository extends CrudRepository<Address, Long> {
 
-  Page<Address> findAll(Pageable page);
+  Page<Address> findAllByOrderByCountryAsc(Pageable page);
 }

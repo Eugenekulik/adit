@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -12,7 +12,6 @@ import { SearchComponent } from './component/search/search.component';
 import { LoginComponent } from './component/login/login.component';
 import {ReactiveFormsModule,FormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { AdvertisementComponent } from './component/advertisement/advertisement.component';
 import {AuthGuard} from "./service/auth.guard";
 import {AuthInterceptor} from "./service/auth.interceptor";
 import {AuthenticationService} from "./service/authentication.service";
@@ -26,6 +25,13 @@ import { AdministrateFeatureComponent } from './component/administrate/administr
 import { AdvStatusPipe } from './service/pipe/adv-status.pipe';
 import { AdvertisementEditComponent } from './component/administrate/administrate-advertisement/advertisement-edit/advertisement-edit.component';
 import { CreateAdvertisementComponent } from './component/create-advertisement/create-advertisement.component';
+import { CreateAddressComponent } from './component/create-address/create-address.component';
+import { CreateFeatureComponent } from './component/create-feature/create-feature.component';
+import { CreateCategoryComponent } from './component/create-category/create-category.component';
+import localeRu from "@angular/common/locales/ru"
+import {registerLocaleData} from "@angular/common";
+
+registerLocaleData(localeRu,'ru')
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,6 @@ import { CreateAdvertisementComponent } from './component/create-advertisement/c
     AboutComponent,
     SearchComponent,
     LoginComponent,
-    AdvertisementComponent,
     AdministrateComponent,
     AdministrateAdvertisementComponent,
     AdministrateUserComponent,
@@ -44,6 +49,9 @@ import { CreateAdvertisementComponent } from './component/create-advertisement/c
     AdvStatusPipe,
     AdvertisementEditComponent,
     CreateAdvertisementComponent,
+    CreateAddressComponent,
+    CreateFeatureComponent,
+    CreateCategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +70,8 @@ import { CreateAdvertisementComponent } from './component/create-advertisement/c
       useClass:AuthInterceptor,
       multi:true
     },
-    AuthenticationService
+    AuthenticationService,
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })

@@ -30,7 +30,7 @@ public class FeatureService {
   }
 
   public Page<Feature> findPage(Integer page) {
-    return featureRepository.findAll(PageRequest.of(page,10));
+    return featureRepository.findAllByOrderByNameAsc(PageRequest.of(page,10));
   }
 
   public Feature updateFeature(Feature feature) {
@@ -38,6 +38,6 @@ public class FeatureService {
   }
 
   public Page<Feature> findByNameContains(String name, Integer page) {
-    return featureRepository.findByNameContainsIgnoreCase(name, PageRequest.of(page,10));
+    return featureRepository.findByNameContainsIgnoreCaseOrderByNameAsc(name, PageRequest.of(page,10));
   }
 }

@@ -28,7 +28,7 @@ public class AddressService {
   }
 
   public Page<Address> getPage(Integer page){
-    return addressRepository.findAll(PageRequest.of(page,10));
+    return addressRepository.findAllByOrderByCountryAsc(PageRequest.of(page,10));
   }
 
   public Address updateAddress(Address address){

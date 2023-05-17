@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <h3>Новый адрес</h3>
+  <form [formGroup]="address" class="bg-opacity-50 bg-white form-control">
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3">страна</label>
+      <input formControlName="country" class="form-control bg-white bg-opacity-10">
+    </div>
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3">область</label>
+      <input formControlName="region" class="form-control bg-white bg-opacity-10">
+    </div>
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3">город</label>
+      <input formControlName="city" class="form-control bg-white bg-opacity-10">
+    </div>
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3">район</label>
+      <input formControlName="part" class="form-control bg-white bg-opacity-10">
+    </div>
+    <input type="submit" class="btn btn-primary" value="создать" (click)="createAddress()">
+  </form>
+</div>

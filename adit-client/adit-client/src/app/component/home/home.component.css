@@ -15,6 +15,13 @@
   filter: opacity(70%);
 }
 
+@media (max-width: 576px) {
+  table {
+    font-size: 70%;
+  }
+
+}
+
 @media (min-width: 992px) {
   .container-fluid {
     flex-direction: row;
@@ -22,7 +29,9 @@
   .navbar-nav {
     display: block;
     min-height: 800px!important;
-
+  }
+  .adaptive-nav {
+    display: flex;
   }
 }
 
@@ -33,3 +42,25 @@
     --bs-bg-opacity: 25%;
   }
 }
+
+@media (min-width: 576px) {
+  .navbar-nav {
+    display: block;
+    min-height: 0;
+    --bs-bg-opacity: 25%;
+  }
+
+
+}
+
+@media (min-width: 992px) {
+  .container-fluid {
+    flex-direction: row!important;
+  }
+  .navbar-nav {
+    display: block;
+    min-height: 800px!important;
+
+  }
+}
+

@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface FeatureRepository extends CrudRepository<Feature, Long> {
-  Page<Feature> findAll(Pageable page);
+  Page<Feature> findAllByOrderByNameAsc(Pageable page);
 
-  Page<Feature> findByNameContainsIgnoreCase(String name, Pageable pageable);
+  Page<Feature> findByNameContainsIgnoreCaseOrderByNameAsc(String name, Pageable pageable);
 }

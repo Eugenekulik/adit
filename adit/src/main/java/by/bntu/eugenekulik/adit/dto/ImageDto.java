@@ -11,7 +11,6 @@ public class ImageDto {
 
   private String filename;
 
-  private String url;
 
 
   public Image toImage(){
@@ -24,7 +23,6 @@ public class ImageDto {
     return ImageDto.builder()
         .id(image.getId())
         .filename(image.getFilename())
-        .url("http://localhost:8080/images/" + image.getId())
         .build();
   }
 }

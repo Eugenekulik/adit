@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <h3>Новая характеристика</h3>
+  <form [formGroup]="feature" class="bg-opacity-50 bg-white form-control">
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3 col-sm-2">название</label>
+      <input formControlName="name" class="form-control bg-white bg-opacity-10">
+    </div>
+    <div class="form-control bg-opacity-50 bg-white d-flex align-content-center">
+      <label class="col-3 col-sm-2">описание</label>
+      <textarea formControlName="description" class="form-control bg-white bg-opacity-10"></textarea>
+    </div>
+    <input type="submit" class="btn btn-primary" value="создать" (click)="createFeature()">
+  </form>
+</div>
