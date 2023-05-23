@@ -9,7 +9,7 @@
     </li>
   </ul>
   <div class="col-lg-10 col-sm-12">
-    <div class="p-2 bg-opacity-10 bg-info" *ngFor="let advertisement of advertisements">
+    <div class="p-2 bg-opacity-10 bg-dark mb-5" *ngFor="let advertisement of advertisements">
       <div class="h2 ms-2">
         <h2> {{advertisement.name}}</h2>
       </div>
@@ -43,6 +43,11 @@
       </div>
       <div>
         <p> {{advertisement.description}}</p>
+        <div class="d-flex">
+          <span class="col-6">стоимость: {{advertisement.price | currency: 'BYN'}}</span>
+          <div class="col-6 d-flex justify-content-end">
+            <span>дата подачи: {{advertisement.placedAt | date: 'medium'}}</span></div>
+        </div>
       </div>
     </div>
     <ul class="pagination m-2" *ngIf="advertisements.length">

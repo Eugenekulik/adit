@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Feature} from "../../../domain/feature";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {environment} from "../../../../environments/environment";
 
@@ -16,13 +16,9 @@ export class AdministrateFeatureComponent implements OnInit {
   page = 0;
   features: Feature[] = [];
   totalPages: number;
-  current = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
-    featureId: new FormControl('')
-  });
+  current: FormGroup;
   private closeResult = '';
-  constructor(private http:HttpClient, private modalService:NgbModal) { }
+  constructor(private http:HttpClient, private modalService:NgbModal, private fb:FormBuilder) { }
   ngOnInit(): void {
     this.getFeatures(this.page);
   }
@@ -49,9 +45,18 @@ export class AdministrateFeatureComponent implements OnInit {
 
 
   openFeatureModal(content:any, feature:Feature) {
-    this.current.setControl('name', new FormControl(feature.name));
-    this.current.setControl('featureId', new FormControl(feature.featureId.toString()));
-    this.current.setControl('description', new FormControl(feature.description));
+    this.current = this.fb.group({
+      name: new FormControl(feature.name,
+        [Validators.required,
+          Validators.pattern('^[\w]+'),
+        Validators.minLength(2),
+        Validators.maxLength(50)]),
+      description: new FormControl(feature.description,
+        [Validators.required,
+          Validators.pattern('^[\w]+'),
+        Validators.maxLength(1000)]),
+      featureId: new FormControl(feature.featureId)
+    });
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;

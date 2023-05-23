@@ -59,10 +59,40 @@
       <div>
         <label>Название</label>
         <input class="form-control col-12 bg-light bg-opacity-50" type="text" formControlName="name">
+        <div class="col-12" *ngIf="current.get('name')?.invalid &&
+          (current.get('name')?.dirty ||
+          current.get('name')?.touched)">
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('name')?.errors?.required">
+            Название обязательное для заполнения</div>
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('name')?.errors?.pattern">
+            Используются недопустимые символы</div>
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('name')?.errors?.minlength">
+            Минимальное количество символов 2
+            </div>
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('name')?.errors?.maxlength">
+            Максимальное количество символов 50</div>
+        </div>
       </div>
       <div>
         <label>Описание</label>
         <textarea class="form-control col-12 bg-light bg-opacity-50" formControlName="description"></textarea>
+        <div class="col-12" *ngIf="current.get('description')?.invalid &&
+          (current.get('description')?.dirty ||
+          current.get('description')?.touched)">
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('description')?.errors?.required">
+            Описание обязательное для заполнения</div>
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('description')?.errors?.pattern">
+            Используются недопустимые символы</div>
+          <div class="bg-danger bg-opacity-25 form-control"
+               *ngIf="current.get('description')?.errors?.maxlength">
+            Максимальное количество символов 1000</div>
+        </div>
       </div>
       <input type="hidden" formControlName="featureId">
     </form>

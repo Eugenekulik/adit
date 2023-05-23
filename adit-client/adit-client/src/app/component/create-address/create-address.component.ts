@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
@@ -13,26 +13,36 @@ export class CreateAddressComponent implements OnInit {
 
   baseUrl = environment.baseUrl;
 
-  address = new FormGroup({
-    country: new FormControl(''),
-    region: new FormControl(''),
-    city: new FormControl(''),
-    part: new FormControl('')
-  })
+  address = this.fb.group({
+    country: new FormControl('',
+      [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)]),
+    region: new FormControl('',
+      [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+        Validators.minLength(2),
+        Validators.maxLength(50)]),
+    city: new FormControl('',
+      [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+        Validators.minLength(2),
+        Validators.maxLength(50)]),
+    part: new FormControl('',
+      [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+        Validators.minLength(2),
+        Validators.maxLength(50)])
+  });
 
-  constructor(private http:HttpClient,private router:Router) { }
+  constructor(private http:HttpClient,private router:Router, private fb:FormBuilder) { }
 
   ngOnInit(): void {
   }
 
   createAddress() {
-    this.http.post(this.baseUrl + 'address', {
-      country: this.address.value.country,
-      region: this.address.value.region,
-      city: this.address.value.city,
-      part: this.address.value.part
-    }).subscribe((res:any)=>{
-      this.router.navigate(['/administrate/address']);
-    })
+    if(this.address.valid) {
+      this.http.post(this.baseUrl + 'address', this.address.value).subscribe((res: any) => {
+        this.router.navigate(['/administrate/address']);
+      })
+    }
   }
 }

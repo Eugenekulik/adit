@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Advertisement} from "../../../../domain/advertisement";
 import {faTimes} from "@fortawesome/free-solid-svg-icons/faTimes";
-import {Image} from "../../../../domain/image";
-import {FormControl, FormGroup} from "@angular/forms";
-import {environment} from "../../../../../environments/environment";
+import {Image} from "../../domain/image";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {environment} from "../../../environments/environment";
+import {Advertisement} from "../../domain/advertisement";
+import {AuthorizationService} from "../../service/authorization.service";
 
 @Component({
   selector: 'app-advertisement-edit',
@@ -15,20 +16,16 @@ export class AdvertisementEditComponent implements OnInit {
   baseUrl = environment.baseUrl;
   faTimes = faTimes
 
-  adv = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
-    status: new FormControl(0),
-    price: new FormControl(0)
-  })
+  adv: FormGroup;
 
   advertisement: Advertisement = JSON.parse(localStorage.getItem('adv')!);
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, public auth: AuthorizationService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
     this.createForm();
+    console.log(this.advertisement);
     localStorage.removeItem('adv');
   }
 
@@ -78,11 +75,17 @@ export class AdvertisementEditComponent implements OnInit {
 
   private createForm() {
 
-    this.adv = new FormGroup({
-      name: new FormControl(this.advertisement?.name),
-      description: new FormControl(this.advertisement?.description),
+    this.adv = this.fb.group({
+      name: new FormControl(this.advertisement?.name,
+        [Validators.required,
+        Validators.maxLength(50),
+        Validators.minLength(2)]),
+      description: new FormControl(this.advertisement?.description,
+        [Validators.maxLength(1000)]),
       status: new FormControl(this.advertisement?.status),
-      price: new FormControl(this.advertisement?.price)
+      price: new FormControl(this.advertisement?.price,
+        [Validators.min(0),
+        Validators.max(50000)])
     })
 
   }

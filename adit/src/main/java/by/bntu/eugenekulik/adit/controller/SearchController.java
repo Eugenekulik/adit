@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/search", produces = "application/json")
 public class SearchController {
 
-  private AdvertisementService advertisementService;
+  private final AdvertisementService advertisementService;
 
   public SearchController(AdvertisementService advertisementService) {
     this.advertisementService = advertisementService;

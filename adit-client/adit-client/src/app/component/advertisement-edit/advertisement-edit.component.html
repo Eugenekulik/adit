@@ -28,16 +28,46 @@
         <div class="col-xl-8">
           <label class="col-12">Название товара</label>
           <input class="col-12 form-control bg-opacity-50 bg-white" type="text" formControlName="name" >
+          <div class="col-12" *ngIf="adv.get('name')?.invalid &&
+          (adv.get('name')?.dirty ||
+          adv.get('name')?.touched)">
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('name')?.errors?.required">
+              название обязательное для заполнения</div>
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('name')?.errors?.minlength">
+              Название должно быть не меньше 2 символов</div>
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('name')?.errors?.maxLength">
+              Название должно не превышать 50 символов</div>
+          </div>
         </div>
         <div class="col-xl-8">
           <label class="col-12">Описание</label>
           <textarea class="col-12 form-control bg-opacity-50 bg-white" formControlName="description"></textarea>
+          <div class="col-12" *ngIf="adv.get('description')?.invalid &&
+          (adv.get('description')?.dirty ||
+          adv.get('description')?.touched)">
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('description')?.errors?.maxLength">
+              Превышен лимит на 1000 символов</div>
+          </div>
         </div>
         <div class="col-xl-8">
           <label class="col-12">Цена</label>
           <input class="col-12 form-control bg-opacity-50 bg-white" type="number" formControlName="price" >
+          <div class="col-12" *ngIf="adv.get('price')?.invalid &&
+          (adv.get('price')?.dirty ||
+          adv.get('price')?.touched)">
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('price')?.errors?.min">
+              Цена не может быть отрицательной</div>
+            <div class="bg-danger bg-opacity-25 form-control"
+                 *ngIf="adv.get('price')?.errors?.max">
+              Ограничение по цене 50000 BYN</div>
+          </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col-xl-8" *ngIf="auth.roleMatch(['admin'])">
           <label class="col-12">Статус</label>
           <select class="col-12 bg-opacity-50 bg-white form-select"  formControlName="status">
             <option value="1" class="bg-opacity-50 bg-white">в обработке</option>

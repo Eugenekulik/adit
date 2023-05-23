@@ -1,9 +1,25 @@
 <div class="container-fluid">
-  <h3>Новый категория</h3>
+  <h3>Новая категория</h3>
   <form class="bg-opacity-50 bg-white form-control">
     <label class="col-3">название</label>
     <div>
-      <input type="text" class="form-control bg-white bg-opacity-10" (change)="changeName($event)">
+      <input type="text" class="form-control bg-white bg-opacity-10" [formControl]="categoryName">
+      <div class="col-12" *ngIf="categoryName.invalid &&
+          (categoryName.dirty ||
+          categoryName.touched)">
+        <div class="bg-danger bg-opacity-25 form-control"
+             *ngIf="categoryName.errors?.minlength">
+          Минимальное количество символов 2
+        </div>
+        <div class="bg-danger bg-opacity-25 form-control"
+             *ngIf="categoryName.errors?.maxlength">
+          Максимальное количество символов 50
+        </div>
+        <div class="bg-danger bg-opacity-25 form-control"
+             *ngIf="categoryName.errors?.required">
+          Название обязательное для заполнения
+        </div>
+      </div>
     </div>
     <label>родительская категория</label>
     <div class="form-control bg-opacity-10 bg-white d-flex">

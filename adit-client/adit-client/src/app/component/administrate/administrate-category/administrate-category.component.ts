@@ -5,6 +5,7 @@ import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch"
 import {Feature} from "../../../domain/feature";
 import {environment} from "../../../../environments/environment";
+import {FormControl, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-administrate-category',
@@ -37,7 +38,7 @@ export class AdministrateCategoryComponent implements OnInit {
   searchCategoryResult: Category[];
   totalModalCategoryPages: number;
   categoryModalPage: number;
-
+  currentName: FormControl;
 
 
 
@@ -138,6 +139,7 @@ export class AdministrateCategoryComponent implements OnInit {
   }
 
   saveChanges(modal: any) {
+    this.current.name = this.currentName.value;
     this.http.patch("http://localhost:8080/category",this.current)
       .subscribe((res:any)=>{
         this.categories.splice(this.categories.indexOf(this.current),1);
@@ -167,6 +169,11 @@ export class AdministrateCategoryComponent implements OnInit {
     this.words = '';
     this.searchCategoryResult = [];
     this.current = category;
+    this.currentName = new FormControl(category.name,[
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50)
+    ])
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -177,7 +184,4 @@ export class AdministrateCategoryComponent implements OnInit {
     );
   }
 
-  changeName(event: any) {
-    this.current.name = event.target.value;
-  }
 }

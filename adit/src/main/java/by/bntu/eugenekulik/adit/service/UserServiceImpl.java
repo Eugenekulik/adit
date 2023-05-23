@@ -72,12 +72,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public  Optional<User> create(User user){
     user.setPassword(encoder.encode(user.getPassword()));
-    user.setRoles(user.getRoles().stream()
-        .map(Role::getRoleId)
-        .map(roleRepository::findById)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .toList());
     Role role = roleRepository.findByName("client");
     user.setRoles(List.of(role));
     user = userRepository.save(user);

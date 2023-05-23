@@ -3,7 +3,7 @@ import {Address} from "../../../domain/address";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-administrate-address',
@@ -16,15 +16,9 @@ export class AdministrateAddressComponent implements OnInit {
   addresses: Address[] = [];
   totalPages: number;
   page = 0;
-  current = new FormGroup({
-    addressId: new FormControl(''),
-    country: new FormControl(''),
-    region: new FormControl(''),
-    city: new FormControl(''),
-    part: new FormControl('')
-  });
+  current: FormGroup;
   closeResult = '';
-  constructor(private http: HttpClient, private modalService:NgbModal) { }
+  constructor(private http: HttpClient, private modalService:NgbModal, private fb:FormBuilder) { }
   ngOnInit(): void {
     this.getAddresses(this.page);
   }
@@ -48,12 +42,26 @@ export class AdministrateAddressComponent implements OnInit {
   }
 
   open(content:any, address:Address) {
-    this.current = new FormGroup({
-      addressId : new FormControl(address.addressId.toString()),
-      country : new FormControl(address.country),
-      city :new FormControl(address.city),
-      region :new FormControl(address.region),
-      part : new FormControl(address.part)});
+    this.current = this.fb.group({
+      addressId: new FormControl(address.addressId),
+      country: new FormControl(address.country,
+        [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50)]),
+      region: new FormControl(address.region,
+        [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+          Validators.minLength(2),
+          Validators.maxLength(50)]),
+      city: new FormControl(address.city,
+        [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+          Validators.minLength(2),
+          Validators.maxLength(50)]),
+      part: new FormControl(address.part,
+        [Validators.pattern('^[A-Za-zА-Яа-я -]*'),
+          Validators.minLength(2),
+          Validators.maxLength(50)])
+    });
     this.modalService.open(content, { size: 'sm', windowClass: "modal-sm"}).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
@@ -75,10 +83,12 @@ export class AdministrateAddressComponent implements OnInit {
   }
 
   updateAddress(modal: any) {
-    this.http.patch(this.baseUrl+"address", this.current.value)
-      .subscribe( res => {
-          modal.close('update address' + res)
-        }
-      );
+    if(this.current.valid) {
+      this.http.patch(this.baseUrl + "address", this.current.value)
+        .subscribe(res => {
+            modal.close('update address' + res)
+          }
+        );
+    }
   }
 }

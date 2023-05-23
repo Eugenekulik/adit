@@ -1,6 +1,7 @@
 package by.bntu.eugenekulik.adit.controller;
 
 import by.bntu.eugenekulik.adit.dto.JwtAuthorizationDto;
+import by.bntu.eugenekulik.adit.dto.UserDto;
 import by.bntu.eugenekulik.adit.entity.User;
 import by.bntu.eugenekulik.adit.security.JwtProvider;
 import by.bntu.eugenekulik.adit.service.UserService;
@@ -31,7 +32,7 @@ public class AuthorizeController {
     } else return JwtAuthorizationDto.error("user name or password is wrong");
   }
   @PostMapping(value = "/register")
-  public @ResponseBody JwtAuthorizationDto registrate(@RequestBody  User user) {
+  public @ResponseBody JwtAuthorizationDto registrate(@RequestBody User user) {
     if (user != null) {
       Optional<User> result = userService.create(user);
       return result

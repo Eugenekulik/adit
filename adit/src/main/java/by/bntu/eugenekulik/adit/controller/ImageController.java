@@ -25,10 +25,13 @@ import java.util.Optional;
 public class ImageController {
 
 
-  @Autowired
-  private ImageService imageService;
-  @Autowired
-  private AdvertisementService advertisementService;
+  private final ImageService imageService;
+  private final AdvertisementService advertisementService;
+
+  public ImageController(ImageService imageService, AdvertisementService advertisementService) {
+    this.imageService = imageService;
+    this.advertisementService = advertisementService;
+  }
 
 
   @PostMapping(value = "/add", produces = "application/json")

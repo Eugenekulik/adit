@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Address} from "../../domain/address";
 import {Category} from "../../domain/category";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -18,7 +18,6 @@ export class CreateCategoryComponent implements OnInit {
   baseUrl = environment.baseUrl;
 
   faSearch = faSearch;
-  name: string|null;
   parent: Category|null;
   private closeResult = '';
   words = '';
@@ -26,6 +25,10 @@ export class CreateCategoryComponent implements OnInit {
   totalCategoryPages: number;
   categoryPage = 0;
   faTimes = faTimes;
+  categoryName =  new FormControl('',
+    [Validators.required,
+    Validators.min(2),
+    Validators.max(50)]);
 
   constructor(private http: HttpClient, private modalService:NgbModal, private router:Router) { }
 
@@ -74,14 +77,11 @@ export class CreateCategoryComponent implements OnInit {
 
   createCategory() {
     this.http.post(this.baseUrl + 'category', {
-      name: this.name,
+      name: this.categoryName.value,
       parent: this.parent
     }).subscribe((res:any)=>{
       this.router.navigate(['/administrate/category']);
     })
   }
 
-  changeName(event: any) {
-    this.name = event.target.value;
-  }
 }

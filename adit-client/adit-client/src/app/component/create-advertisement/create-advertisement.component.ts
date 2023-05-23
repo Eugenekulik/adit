@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Advertisement} from "../../domain/advertisement";
 import {AuthorizationService} from "../../service/authorization.service";
 import {Category} from "../../domain/category";
@@ -10,6 +10,7 @@ import {faTimes} from "@fortawesome/free-solid-svg-icons/faTimes";
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 import {Feature} from "../../domain/feature";
 import {environment} from "../../../environments/environment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-advertisement',
@@ -18,10 +19,16 @@ import {environment} from "../../../environments/environment";
 })
 export class CreateAdvertisementComponent implements OnInit {
   private baseUrl = environment.baseUrl;
-  advForm = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
-    price: new FormControl(''),
+  advertisement = this.fb.group({
+    name: new FormControl('',
+      [Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50)]),
+    description: new FormControl('',
+      [Validators.maxLength(1000)]),
+    price: new FormControl('',
+      [Validators.min(0),
+      Validators.max(50000)]),
   })
 
   faCross = faTimes
@@ -39,7 +46,11 @@ export class CreateAdvertisementComponent implements OnInit {
   categoryPage =  0;
   faPlus = faPlus;
   showFeatures = false;
-  constructor(private http: HttpClient, private auth: AuthorizationService, private modalService: NgbModal) {
+  constructor(private http: HttpClient,
+              private auth: AuthorizationService,
+              private modalService: NgbModal,
+              private fb: FormBuilder,
+              private router:Router) {
   }
 
   ngOnInit(): void {
@@ -47,9 +58,9 @@ export class CreateAdvertisementComponent implements OnInit {
 
   createAdvertisement() {
     const adv = {
-      name: this.advForm.value.name,
-      description: this.advForm.value.description,
-      price: this.advForm.value.price,
+      name: this.advertisement.value.name,
+      description: this.advertisement.value.description,
+      price: this.advertisement.value.price,
       user: this.auth.getUser(),
       category: this.currentCategory,
       features: this.features
@@ -62,7 +73,10 @@ export class CreateAdvertisementComponent implements OnInit {
         form.append('file',img,img.name);
         form.append('advertisementId', res.id.toString())
         this.http.post(this.baseUrl+"images/add", form)
-          .subscribe(resp => console.log(resp));
+          .subscribe(resp => {
+            console.log(resp);
+            this.router.navigate(['/user/advertisement'])
+          });
       })
     })
   }

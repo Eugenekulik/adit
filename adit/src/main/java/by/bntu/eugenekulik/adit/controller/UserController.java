@@ -17,8 +17,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/user", produces = "application/json")
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public Iterable<UserDto> getUsers(@RequestParam int page){
         Page<User> result = userService.getPage(page);

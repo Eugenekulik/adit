@@ -1,7 +1,7 @@
 insert into user(user_id, login, password, email, first_name, last_name, age, phone)
 values(1,'admin','$2a$10$KD3GqTUp2/VPHJ54PdGW6..T65bzXU.Wuk/KBcqv/F761IOxacGX.',
        'admin@mail.ru','admin','admin','2000-01-01','+375290000000'),
-      (2,'eugene','$2a$10$AKQs6V8C4TDhtqMqn7DcaO5MpEznY/u45ger1jYmY1iKPPH4uIDRO',
+      (2,'eugene','$2a$10$fBwxF9.wjGTGvnZSj9P9beVXExE6P6/zJyUgrtTQiy1BC38ZOqDAm',
        'eugenek@mail.ru','eugene','kulik','1996-08-25','+375291111111'),
       (3,'alex','$2a$10$eVPuhYqzeoA4bkm7BjP.sOOKOpkeRNdcfIASrhVUZoS.vzzfdpxr.',
        'alexs@mail.ru','alex','semenchik','1996-10-30','+375292222222'),

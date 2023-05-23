@@ -1,29 +1,59 @@
 <div class="container d-flex justify-content-center">
-  <form [formGroup]="advForm" (ngSubmit)="createAdvertisement()"
+  <form [formGroup]="advertisement" (ngSubmit)="createAdvertisement()"
         class="col-8 mt-5">
-    <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3"
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2"
            type="text"
            name="name"
            id="name"
-           placeholder="Enter name" required formControlName="name">
-    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           placeholder="Название" required formControlName="name">
+    <div class="col-12" *ngIf="advertisement.get('name')?.invalid &&
+          (advertisement.get('name')?.dirty ||
+          advertisement.get('name')?.touched)">
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('name')?.errors?.required">
+        название обязательное для заполнения</div>
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('name')?.errors?.minlength">
+        Название должно быть не меньше 2 символов</div>
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('name')?.errors?.maxLength">
+        Название должно не превышать 50 символов</div>
+    </div>
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2"
            type="text"
            name="description"
            id="description"
-           placeholder="Write description" required formControlName="description">
-    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           placeholder="Описание" required formControlName="description">
+    <div class="col-12" *ngIf="advertisement.get('description')?.invalid &&
+          (advertisement.get('description')?.dirty ||
+          advertisement.get('description')?.touched)">
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('description')?.errors?.maxLength">
+        Превышен лимит на 1000 символов</div>
+    </div>
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2"
            type="number"
            name="price"
            id="price"
            placeholder="Enter price"
            required
-           formControlName="price">
-    <input class="col-12 form-control-lg bg-opacity-50 bg-white mb-3"
+           formControlName="Цена">
+    <div class="col-12" *ngIf="advertisement.get('price')?.invalid &&
+          (advertisement.get('price')?.dirty ||
+          advertisement.get('price')?.touched)">
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('price')?.errors?.min">
+        Цена не может быть отрицательной</div>
+      <div class="bg-danger bg-opacity-25 form-control"
+           *ngIf="advertisement.get('price')?.errors?.max">
+        Ограничение по цене 50000 BYN</div>
+    </div>
+    <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2"
            (click)="open(content)"
-           placeholder="Choose category"
+           placeholder="Выбрать категорию"
            value="{{currentCategory?.name}}">
-    <div class="col-12 form-control-lg bg-opacity-50 bg-white mb-3 d-flex" aria-placeholder="images">
-      <div class="col-10 d-flex card-group">
+    <div class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 d-flex" aria-placeholder="images">
+      <div class="col-10 d-flex flex-column card-group">
         <div class="d-flex ms-3 times-body col-10" *ngFor="let image of images">
           <span>{{image.name}}</span>
           <div class="ms-1 times" (click)="deleteImage(image)"><fa-icon [icon]="faCross"></fa-icon></div>
@@ -36,15 +66,13 @@
     </div>
     <label *ngIf="features.length" (click)="showFeatures = !showFeatures" class="btn btn-warning bg-opacity-25">Характеристики</label>
     <div *ngIf="showFeatures">
-    <div *ngFor="let feature of features" class="col-12 form-control-lg bg-opacity-50 bg-white mb-3 p-1 d-flex">
+    <div *ngFor="let feature of features" class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 p-1 d-flex">
       <label class="col-4">{{feature.name}}</label>:
       <input type="text" (change)="changeFeatureValue($event, feature)" class="bg-opacity-10 bg-white ps-2 col-8 my-0">
     </div>
     </div>
-    <input type="submit" value="create" class="btn btn-success col-12">
+    <input type="submit" value="create" class="btn btn-primary col-12">
   </form>
-
-
 </div>
 
 
@@ -70,7 +98,7 @@
           <tr *ngFor="let category of categories">
             <td class="col-10">{{category.name}}</td>
             <td>
-              <button class="btn btn-success" (click)="chooseCategory(category,modal)">Add</button>
+              <button class="btn btn-success" (click)="chooseCategory(category,modal)">Выбрать</button>
             </td>
           </tr>
           </tbody>

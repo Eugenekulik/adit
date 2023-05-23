@@ -18,7 +18,7 @@ import {
 } from "./component/administrate/administrate-address/administrate-address.component";
 import {
   AdvertisementEditComponent
-} from "./component/administrate/administrate-advertisement/advertisement-edit/advertisement-edit.component";
+} from "./component/advertisement-edit/advertisement-edit.component";
 import {CreateAdvertisementComponent} from "./component/create-advertisement/create-advertisement.component";
 import {AuthGuard} from "./service/auth.guard";
 import {
@@ -26,6 +26,8 @@ import {
 } from "./component/create-address/create-address.component";
 import {CreateFeatureComponent} from "./component/create-feature/create-feature.component";
 import {CreateCategoryComponent} from "./component/create-category/create-category.component";
+import {UserAdvertisementComponent} from "./component/user-advertisement/user-advertisement.component";
+import {UserEditComponent} from "./component/user-edit/user-edit.component";
 
 
 const routes: Routes = [
@@ -36,7 +38,6 @@ const routes: Routes = [
   {path: 'administrate', component: AdministrateComponent, canActivate:[AuthGuard],data:{roles:['admin']},
     children: [
       {path: 'advertisement', component: AdministrateAdvertisementComponent},
-      {path: 'advertisement/edit', component: AdvertisementEditComponent},
       {path: 'user', component: AdministrateUserComponent},
       {path: 'category', component: AdministrateCategoryComponent},
       {path: 'feature', component: AdministrateFeatureComponent},
@@ -45,7 +46,10 @@ const routes: Routes = [
   {path: 'address/create', component: CreateAddressComponent, canActivate:[AuthGuard],data:{roles:['admin']}},
   {path: 'feature/create', component: CreateFeatureComponent, canActivate:[AuthGuard],data:{roles:['admin']}},
   {path: 'advertisement/create', component: CreateAdvertisementComponent, canActivate:[AuthGuard],data:{roles:['client']}},
-  {path: 'category/create', component: CreateCategoryComponent, canActivate:[AuthGuard],data:{roles:['admin']}}
+  {path: 'category/create', component: CreateCategoryComponent, canActivate:[AuthGuard],data:{roles:['admin']}},
+  {path: 'user/advertisement', component: UserAdvertisementComponent, canActivate:[AuthGuard],data:{roles: ['client']}},
+  {path: 'advertisement/edit', component: AdvertisementEditComponent, canActivate:[AuthGuard],data:{roles: ['client','admin']}},
+  {path: 'user/edit', component: UserEditComponent, canActivate:[AuthGuard], data:{roles:['client']}}
 ]
 
 @NgModule({

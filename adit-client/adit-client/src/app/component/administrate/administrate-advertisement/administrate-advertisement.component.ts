@@ -40,6 +40,6 @@ export class AdministrateAdvertisementComponent implements OnInit {
 
   getAdvertisement(advertisement: Advertisement) {
     localStorage.setItem('adv', JSON.stringify(advertisement));
-    this.router.navigate(['/administrate/advertisement/edit']);
+    this.router.navigate(['/advertisement/edit']);
   }
 }

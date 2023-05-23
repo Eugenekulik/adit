@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.List;
 @JsonIgnoreProperties
 public class UserDto {
 
-  private Long id;
+  private Long userId;
   private String login;
   private String firstName;
   private String lastName;
@@ -26,20 +27,20 @@ public class UserDto {
 
   public User toUser(){
     User user = new User();
-    user.setUserId(id);
+    user.setUserId(userId);
     user.setLogin(login);
     user.setFirstName(firstName);
     user.setLastName(lastName);
     user.setEmail(email);
     user.setPhone(phone);
     user.setAge(age);
-    user.setRoles(roles);
+    user.setRoles(roles!=null?roles: Collections.emptyList());
     return user;
   }
 
   public static UserDto fromUser(User user){
     return UserDto.builder()
-        .id(user.getUserId())
+        .userId(user.getUserId())
         .age(user.getAge())
         .email(user.getEmail())
         .firstName(user.getFirstName())

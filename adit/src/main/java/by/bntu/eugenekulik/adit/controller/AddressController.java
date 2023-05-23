@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/address", produces = "application/json")
 public class AddressController {
 
-  private AddressService addressService;
+  private final AddressService addressService;
 
   public AddressController(AddressService addressService) {
     this.addressService = addressService;

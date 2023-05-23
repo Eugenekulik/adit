@@ -4,7 +4,6 @@ import by.bntu.eugenekulik.adit.dto.AdvertisementDto;
 import by.bntu.eugenekulik.adit.entity.Advertisement;
 import by.bntu.eugenekulik.adit.service.AdvertisementService;
 import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/advertisement", produces = "application/json")
 public class AdvertisementController {
 
-  @Autowired
-  private AdvertisementService advertisementService;
+  private final AdvertisementService advertisementService;
+
+  public AdvertisementController(AdvertisementService advertisementService) {
+    this.advertisementService = advertisementService;
+  }
 
   @GetMapping
   public Iterable<AdvertisementDto> getAdvertisements(@RequestParam int page) {
@@ -64,6 +66,15 @@ public class AdvertisementController {
   public Iterable<AdvertisementDto> getByCategory(@RequestParam Long categoryId, @RequestParam(required = false) Integer page){
     if(page == null) page = 0;
     Page<Advertisement> result = advertisementService.getByCategory(categoryId,page);
+    return new PageImpl<>(result.stream()
+        .map(AdvertisementDto::fromAdvertisement)
+        .toList(), PageRequest.of(page,10),result.getTotalElements());
+  }
+
+  @GetMapping("/user/{id}")
+  public Iterable<AdvertisementDto> getByUser(@PathVariable Long id, @RequestParam(required = false) Integer page){
+    if(page == null) page = 0;
+    Page<Advertisement> result = advertisementService.findByUser(id,page);
     return new PageImpl<>(result.stream()
         .map(AdvertisementDto::fromAdvertisement)
         .toList(), PageRequest.of(page,10),result.getTotalElements());

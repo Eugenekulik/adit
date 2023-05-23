@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/role", produces = "application/json")
 public class RoleController {
 
-  private RoleService roleService;
+  private final RoleService roleService;
 
   public RoleController(RoleService roleService) {
     this.roleService = roleService;

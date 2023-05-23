@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
@@ -13,8 +13,12 @@ export class CreateFeatureComponent implements OnInit {
   baseUrl = environment.baseUrl;
 
   feature = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl('')
+    name: new FormControl('',
+      [Validators.maxLength(50),
+      Validators.minLength(2),
+      Validators.required]),
+    description: new FormControl('',
+      [Validators.maxLength(1000)])
   });
 
   constructor(private http: HttpClient, private router:Router) { }

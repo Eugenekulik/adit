@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../domain/user";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {FormArray, FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Role} from "../../../domain/role";
 import {environment} from "../../../../environments/environment";
@@ -19,19 +19,12 @@ export class AdministrateUserComponent implements OnInit {
   allRoles: Role[] = [];
 
   current: User;
-  form =  new FormGroup({
-    login: new FormControl(''),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    age: new FormControl(Date.now().toString()),
-    phone: new FormControl(''),
-    email: new FormControl(''),
-    id: new FormControl(0),
-    roles: new FormArray([new FormControl(0)])
-  });
+  form: FormGroup;
   closeResult = '';
 
-  constructor(private http: HttpClient, private modalService: NgbModal) {
+  constructor(private http: HttpClient,
+              private modalService: NgbModal,
+              private fb:FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -49,7 +42,7 @@ export class AdministrateUserComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.http.delete(this.baseUrl+"user/" + user.id).subscribe(res => {
+    this.http.delete(this.baseUrl+"user/" + user.userId).subscribe(res => {
       const index = this.users.indexOf(user);
       if (index > -1) this.users.splice(index, 1);
     });
@@ -69,17 +62,17 @@ export class AdministrateUserComponent implements OnInit {
       login: this.form.value.login,
       firstName: this.form.value.firstName,
       lastName: this.form.value.lastName,
-      age: this.form.value.age,
+      age: this.form.value.age.toString(),
       phone: this.form.value.phone,
       email: this.form.value.email,
-      roles: this.form.value.roles?.map(role=>{
+      roles: this.form.value.roles?.map((role:any)=>{
         return this.allRoles.find(x=>x.roleId == role);
       }),
-      id: this.form.value.id
+      id: this.form.value.userId
     }
     this.http.patch(this.baseUrl+"user", user).subscribe((res:any) => {
       modal.close('save');
-      this.users.splice(this.users.findIndex(usr=>usr.id == user.id),1);
+      this.users.splice(this.users.findIndex(usr=>usr.userId == user.id),1);
       this.users.push(res);
     });
 
@@ -89,17 +82,36 @@ export class AdministrateUserComponent implements OnInit {
   open(content: any, user: User) {
     this.current = user;
     this.http.get(this.baseUrl+"role").subscribe((res: any) => this.allRoles = res.content as Role[]);
-    this.form.setControl('login', new FormControl(user.login));
-    this.form.setControl('lastName', new FormControl(user.lastName));
-    this.form.setControl('firstName', new FormControl(user.firstName));
-    this.form.setControl('email', new FormControl(user.email));
-    this.form.setControl('phone', new FormControl(user.phone));
-    this.form.setControl('age', new FormControl(user.age.toString()));
-    this.form.setControl('id', new FormControl(user.id));
     const rl = new FormArray(user.roles.map(role=>{
       return new FormControl(role.roleId);
     }));
-    this.form.setControl('roles',rl);
+    this.form = this.fb.group({
+      userId: new FormControl(user.userId),
+      login: new FormControl(user.login,
+        [Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20),
+          Validators.pattern('[A-Za-z]+[A-Za-z0-9_]*')]),
+      firstName: new FormControl(user.firstName,
+        [Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(20),
+          Validators.pattern('[A-Za-zА-Яа-я]*')]),
+      lastName: new FormControl(user.lastName,
+        [Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(20),
+          Validators.pattern('[A-Za-zА-Яа-я]*')]),
+      age: new FormControl(user.age,
+        [Validators.required]),
+      phone: new FormControl(user.phone,
+        [Validators.pattern('^[\+]?[0-9]{3,15}')
+      ]),
+      email: new FormControl(user.email,
+        [Validators.email]),
+      roles: rl
+    });
+    console.log(this.form);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
