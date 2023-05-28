@@ -1,7 +1,6 @@
 package by.bntu.eugenekulik.adit.controller;
 
 import by.bntu.eugenekulik.adit.dto.JwtAuthorizationDto;
-import by.bntu.eugenekulik.adit.dto.UserDto;
 import by.bntu.eugenekulik.adit.entity.User;
 import by.bntu.eugenekulik.adit.security.JwtProvider;
 import by.bntu.eugenekulik.adit.service.UserService;

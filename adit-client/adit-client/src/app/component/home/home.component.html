@@ -1,6 +1,6 @@
 <div class="container-fluid col-12 p-0 d-flex flex-column">
   <ul
-      class="navbar-nav navbar-expand-lg nav-pills d-block flex-column mb-auto adaptive-nav bg-opacity-50 bg-dark col-lg-2 col-sm-12">
+    class="navbar-nav navbar-expand-lg nav-pills d-block flex-column mb-auto adaptive-nav bg-opacity-50 bg-dark col-lg-2 col-sm-12">
     <li *ngIf="parent" class="nav-item btn btn-sm btn-outline-dark col-12" (click)="back()">
       <fa-icon [icon]="faBack"></fa-icon>
     </li>
@@ -10,8 +10,10 @@
   </ul>
   <div class="col-lg-10 col-sm-12">
     <div class="p-2 bg-opacity-10 bg-dark mb-5" *ngFor="let advertisement of advertisements">
-      <div class="h2 ms-2">
+      <div class="ms-2">
         <h2> {{advertisement.name}}</h2>
+        {{advertisement?.address?.country}} {{advertisement?.address?.region}}
+        {{advertisement?.address?.city}} {{advertisement?.address?.part}}
       </div>
       <div class="d-flex">
         <div *ngIf="advertisement.images.length" class="col-6">
@@ -25,17 +27,48 @@
             </ng-template>
           </ngb-carousel>
         </div>
-        <div class="p-2">
+        <div class="px-2">
           <table *ngIf="advertisement.features.length" class="table-hover table">
+            <thead>
+            <tr>
+              <th colspan="2">Характеристики товара</th>
+            </tr>
+            </thead>
             <tbody>
             <tr *ngFor="let feature of advertisement.features">
               <td
                 placement="right"
                 ngbPopover="{{feature.description}}"
                 popoverTitle="{{feature.name}}"
+                container="body"
+                triggers="mouseenter:mouseleave"
+                #myPopover="ngbPopover"
+                (mouseenter)="myPopover.open()"
+                (mouseleave)="myPopover.close()"
               >{{feature.name}}
               </td>
               <td>{{feature.value}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <table class="table-hover table">
+            <thead>
+            <tr>
+              <th colspan="2">Контакты продавца</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Имя продавца</td>
+              <td>{{advertisement.user.firstName}}</td>
+            </tr>
+            <tr>
+              <td>Э-почта</td>
+              <td>{{advertisement.user.email}}</td>
+            </tr>
+            <tr>
+              <td>Номер телефона:</td>
+              <td>{{advertisement.user.phone}}</td>
             </tr>
             </tbody>
           </table>

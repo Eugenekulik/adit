@@ -12,12 +12,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let advertisement of advertisements" (click)="getAdvertisement(advertisement)">
-        <td>{{advertisement.name}}</td>
-        <td>{{advertisement.placedAt | date: 'medium'}}</td>
-        <td>{{advertisement.price}}</td>
-        <td>{{advertisement.status | advStatus}}</td>
-        <td>{{advertisement.user.firstName}} {{advertisement.user.lastName}}</td>
+      <tr *ngFor="let advertisement of advertisements">
+        <td (click)="getAdvertisement(advertisement)">{{advertisement.name}}</td>
+        <td (click)="getAdvertisement(advertisement)">{{advertisement.placedAt | date: 'medium'}}</td>
+        <td (click)="getAdvertisement(advertisement)">{{advertisement.price}}</td>
+        <td (click)="getAdvertisement(advertisement)">{{advertisement.status | advStatus}}</td>
+        <td (click)="getAdvertisement(advertisement)">{{advertisement.user.firstName}} {{advertisement.user.lastName}}</td>
         <td>
           <button class="btn btn-warning" (click)="archiveAdvertisement(advertisement)">
             в архив

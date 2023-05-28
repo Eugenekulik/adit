@@ -9,7 +9,6 @@ import by.bntu.eugenekulik.adit.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +44,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
   @Override
   public Advertisement save(Advertisement advertisement) {
+    advertisement.setStatus(1);
     return advertisementRepository.save(advertisement);
   }
   @Override
@@ -73,17 +73,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
   @Transactional
   public Page<Advertisement> search(String words, Integer page) {
     return advertisementRepository
-        .findByNameContainsIgnoreCaseOrderByNameAsc(words, PageRequest.of(page, 10));
+        .findByNameContainsIgnoreCaseAndStatusOrderByNameAsc(words,2, PageRequest.of(page, 10));
   }
   @Override
   public Page<Advertisement> getByCategory(Long categoryId, Integer page) {
-    Set<Category> categories = recurciveChildren(categoryRepository.findById(categoryId).get());
+    Set<Category> categories = recursiveChildren(categoryRepository.findById(categoryId).get());
     return advertisementRepository
         .findByCategories(categories.stream()
             .mapToLong(x -> x.getCategoryId())
-            .toArray(), PageRequest.of(page, 10));
+            .toArray(),2, PageRequest.of(page, 10));
   }
-  public Set<Category> recurciveChildren(Category category) {
+  public Set<Category> recursiveChildren(Category category) {
     Set<Category> categories = categoryRepository.findByParentOrderByNameAsc(category);
     categories.add(category);
     return categories;

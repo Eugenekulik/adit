@@ -13,6 +13,10 @@ public class AddressService {
   private AddressRepository addressRepository;
 
 
+  public Page<Address> search(Integer page, String words){
+    return addressRepository.findByFields(words,PageRequest.of(page,10));
+  }
+
   public AddressService(AddressRepository addressRepository) {
     this.addressRepository = addressRepository;
   }

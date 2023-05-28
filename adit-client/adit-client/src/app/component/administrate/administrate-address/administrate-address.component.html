@@ -11,11 +11,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let address of addresses" (click)="open(content,address)">
-        <td>{{address.country}}</td>
-        <td>{{address.region}}</td>
-        <td>{{address.city}}</td>
-        <td>{{address.part}}</td>
+      <tr *ngFor="let address of addresses" >
+        <td (click)="open(content,address)">{{address.country}}</td>
+        <td (click)="open(content,address)">{{address.region}}</td>
+        <td (click)="open(content,address)">{{address.city}}</td>
+        <td (click)="open(content,address)">{{address.part}}</td>
         <td>
           <button class="btn btn-danger" (click)="deleteAddress(address)">
             удалить

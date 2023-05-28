@@ -2,6 +2,8 @@ package by.bntu.eugenekulik.adit.controller;
 
 import by.bntu.eugenekulik.adit.entity.Address;
 import by.bntu.eugenekulik.adit.service.AddressService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,11 @@ public class AddressController {
   @PostMapping
   public ResponseEntity<Address> createAddress(@RequestBody Address address){
     return ResponseEntity.ok(addressService.createAddress(address));
+  }
+
+  @GetMapping("/search")
+  public Iterable<Address> search(@RequestParam Integer page, @RequestParam String words){
+    return addressService.search(page,words);
   }
 
 }

@@ -9,9 +9,9 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let feature of features" (click)="openFeatureModal(content,feature)">
-        <td>{{feature.name}}</td>
-        <td  style="
+      <tr *ngFor="let feature of features" >
+        <td (click)="openFeatureModal(content,feature)">{{feature.name}}</td>
+        <td (click)="openFeatureModal(content,feature)" style="
             max-width: 150px;
             overflow: hidden;
             text-overflow: ellipsis;

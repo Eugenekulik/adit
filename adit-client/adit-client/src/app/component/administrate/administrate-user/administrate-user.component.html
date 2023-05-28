@@ -13,13 +13,13 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let user of users" (click)="open(content,user)">
-        <td>{{user.login}}</td>
-        <td>{{user.firstName}}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.age}}</td>
-        <td>{{user.phone}}</td>
-        <td>{{user.email}}</td>
+      <tr *ngFor="let user of users" >
+        <td (click)="open(content,user)">{{user.login}}</td>
+        <td (click)="open(content,user)">{{user.firstName}}</td>
+        <td (click)="open(content,user)">{{user.lastName}}</td>
+        <td (click)="open(content,user)">{{user.age}}</td>
+        <td (click)="open(content,user)">{{user.phone}}</td>
+        <td (click)="open(content,user)">{{user.email}}</td>
         <td>
           <button *ngIf="!isAdmin(user)" class="btn btn-danger" (click)="deleteUser(user)">
             удалить

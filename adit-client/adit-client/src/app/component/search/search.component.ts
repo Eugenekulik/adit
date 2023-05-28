@@ -34,6 +34,7 @@ export class SearchComponent implements OnInit {
     this.find().subscribe((res:any)=>{
       this.advertisements = res.content;
       this.totalPages = res.totalPages;
+      console.log(res);
     })
   }
   find(){

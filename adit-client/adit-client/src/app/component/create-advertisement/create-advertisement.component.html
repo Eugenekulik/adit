@@ -35,9 +35,9 @@
            type="number"
            name="price"
            id="price"
-           placeholder="Enter price"
+           placeholder="Стоимость"
            required
-           formControlName="Цена">
+           formControlName="price">
     <div class="col-12" *ngIf="advertisement.get('price')?.invalid &&
           (advertisement.get('price')?.dirty ||
           advertisement.get('price')?.touched)">
@@ -49,9 +49,18 @@
         Ограничение по цене 50000 BYN</div>
     </div>
     <input class="col-12 form-control-lg bg-opacity-50 bg-white mt-2"
-           (click)="open(content)"
+           (click)="openCategoryModal(content)"
            placeholder="Выбрать категорию"
            value="{{currentCategory?.name}}">
+    <div (click)="openAddressModal(addressModal)" class="col-12 form-control-lg bg-opacity-50 bg-white mt-2">
+      <label>
+        <span *ngIf="currentAddress?.country">{{currentAddress?.country}}, </span>
+        <span *ngIf="currentAddress?.region">{{currentAddress?.region}}, </span>
+        <span *ngIf="currentAddress?.city">{{currentAddress?.city}}, </span>
+        <span *ngIf="currentAddress?.part">{{currentAddress?.part}}</span>
+        <span *ngIf="!currentAddress">Выбрать адрес</span>
+      </label>
+    </div>
     <div class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 d-flex" aria-placeholder="images">
       <div class="col-10 d-flex flex-column card-group">
         <div class="d-flex ms-3 times-body col-10" *ngFor="let image of images">
@@ -71,7 +80,7 @@
       <input type="text" (change)="changeFeatureValue($event, feature)" class="bg-opacity-10 bg-white ps-2 col-8 my-0">
     </div>
     </div>
-    <input type="submit" value="create" class="btn btn-primary col-12">
+    <input type="submit" value="Создать" class="btn btn-primary col-12">
   </form>
 </div>
 
@@ -123,6 +132,60 @@
         <li class="page-item" *ngIf="categoryPage<totalCategoryPage - 4"><a class="page-link">. . .</a></li>
         <li class="page-item" *ngIf="categoryPage!=totalCategoryPage-1"><a class="page-link"
                (click)="searchCategories(totalCategoryPage-1)">{{totalCategoryPage}}</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #addressModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Адреса</h4>
+    <div class="d-flex ms-5">
+      <div class="form-outline">
+        <input [formControl]="words" (change)="searchAddresses(0)" type="search" id="form2" class="form-control"
+               placeholder="Search"/>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="searchAddresses(0)">
+        <fa-icon [icon]="faSearch"></fa-icon>
+      </button>
+    </div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div style="min-height: 600px">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let address of addresses">
+            <td class="col-10">{{addressService.getFormattedAddress(address)}}</td>
+            <td>
+              <button class="btn btn-success" (click)="chooseAddress(address,modal)">Выбрать</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="pagination bottom-0" *ngIf="addresses.length">
+        <li class="page-item" *ngIf="addressPage!=0"><a class="page-link"
+                                                         (click)="searchCategories(0)">1</a>
+        <li class="page-item" *ngIf="addressPage>3"><a class="page-link">. . .</a></li>
+        <li class="page-item" *ngIf="addressPage>2"><a class="page-link"
+                                                        (click)="searchCategories(addressPage-2)">{{addressPage - 1}}</a>
+        </li>
+        <li class="page-item" *ngIf="addressPage>1"><a class="page-link"
+                                                        (click)="searchCategories(addressPage-1)">{{addressPage}}</a>
+        </li>
+        <li disabled="true" class="page-item"><a class="page-link">{{addressPage + 1}}</a></li>
+        <li class="page-item" *ngIf="addressPage<totalAddressPage-2"><a class="page-link"
+                                                                          (click)="searchCategories(addressPage+1)">{{addressPage + 2}}</a>
+        </li>
+        <li class="page-item" *ngIf="addressPage<totalAddressPage-3"><a class="page-link"
+                                                                          (click)="searchCategories(addressPage+2)">{{addressPage + 3}}</a>
+        <li class="page-item" *ngIf="addressPage<totalAddressPage - 4"><a class="page-link">. . .</a></li>
+        <li class="page-item" *ngIf="addressPage!=totalAddressPage-1"><a class="page-link"
+                                                                           (click)="searchCategories(totalAddressPage-1)">{{totalAddressPage}}</a>
         </li>
       </ul>
     </div>

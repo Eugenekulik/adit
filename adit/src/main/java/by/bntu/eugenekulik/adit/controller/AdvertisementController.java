@@ -33,6 +33,7 @@ public class AdvertisementController {
   @PostMapping
   public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestBody Advertisement advertisement) {
     advertisement.setPlacedAt(LocalDateTime.now());
+    advertisement.getFeatures().removeIf(featureValue -> featureValue.getValue() == null);
     return new ResponseEntity<>(
         AdvertisementDto.fromAdvertisement(advertisementService.save(advertisement)),
         HttpStatus.CREATED);

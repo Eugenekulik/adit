@@ -3,7 +3,6 @@ package by.bntu.eugenekulik.adit.controller;
 import by.bntu.eugenekulik.adit.dto.UserDto;
 import by.bntu.eugenekulik.adit.entity.User;
 import by.bntu.eugenekulik.adit.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

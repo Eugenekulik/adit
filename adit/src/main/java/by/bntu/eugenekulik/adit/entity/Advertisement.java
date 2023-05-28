@@ -36,7 +36,7 @@ public class Advertisement {
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+  @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
   @JoinColumn(name = "address_id")
   private Address address;
 

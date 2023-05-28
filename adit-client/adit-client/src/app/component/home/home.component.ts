@@ -13,13 +13,10 @@ import {environment} from "../../../environments/environment";
 })
 export class HomeComponent implements OnInit {
   baseUrl = environment.baseUrl;
-
   faBack = faArrowLeft;
   faAd = faAd;
   categories: Category[];
-
   parent: Category|null;
-
   advertisements: Advertisement[] = [];
   page = 0;
   totalPages: number;
@@ -28,7 +25,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getCategories(null);
   }
-
   up(parent:Category|null){
     this.parent = parent;
     this.getCategories(parent);
@@ -48,7 +44,6 @@ export class HomeComponent implements OnInit {
       this.advertisements = [];
     }
   }
-
   getAdv(page:number, category:Category){
     this.page =page;
     this.http.get(this.baseUrl+"advertisement/category", {
@@ -60,7 +55,6 @@ export class HomeComponent implements OnInit {
       this.totalPages = res.totalPages;
     })
   }
-
   back() {
     this.parent = this.parent!.parent;
     this.getCategories(this.parent);
