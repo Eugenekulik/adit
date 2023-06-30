@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Address} from "../../domain/address";
+import {FormControl, Validators} from "@angular/forms";
 import {Category} from "../../domain/category";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {faSearch, faTimes} from "@fortawesome/free-solid-svg-icons/";
 import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
 
@@ -17,14 +15,12 @@ export class CreateCategoryComponent implements OnInit {
 
   baseUrl = environment.baseUrl;
 
-  faSearch = faSearch;
   parent: Category|null;
   private closeResult = '';
   words = '';
   searchCategoryResult: Category[] = [];
   totalCategoryPages: number;
   categoryPage = 0;
-  faTimes = faTimes;
   categoryName =  new FormControl('',
     [Validators.required,
     Validators.min(2),

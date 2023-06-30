@@ -42,7 +42,7 @@ export class AdministrateUserComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.http.delete(this.baseUrl+"user/" + user.userId).subscribe(res => {
+    this.http.delete(this.baseUrl+"user/" + user.userId.toString()).subscribe(res => {
       const index = this.users.indexOf(user);
       if (index > -1) this.users.splice(index, 1);
     });
@@ -68,11 +68,11 @@ export class AdministrateUserComponent implements OnInit {
       roles: this.form.value.roles?.map((role:any)=>{
         return this.allRoles.find(x=>x.roleId == role);
       }),
-      id: this.form.value.userId
+      userId: this.form.value.userId.toString()
     }
     this.http.patch(this.baseUrl+"user", user).subscribe((res:any) => {
       modal.close('save');
-      this.users.splice(this.users.findIndex(usr=>usr.userId == user.id),1);
+      this.users.splice(this.users.findIndex(usr=>usr.userId === user.userId),1);
       this.users.push(res);
     });
 
@@ -86,7 +86,7 @@ export class AdministrateUserComponent implements OnInit {
       return new FormControl(role.roleId);
     }));
     this.form = this.fb.group({
-      userId: new FormControl(user.userId),
+      userId: new FormControl(user.userId.toString()),
       login: new FormControl(user.login,
         [Validators.required,
           Validators.minLength(4),

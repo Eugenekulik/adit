@@ -4,9 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-import by.bntu.eugenekulik.adit.dao.AdvertisementRepository;
-import by.bntu.eugenekulik.adit.dao.CategoryRepository;
-import by.bntu.eugenekulik.adit.entity.Advertisement;
+import by.bntu.eugenekulik.adit.dao.jpa.AdvertisementRepository;
+import by.bntu.eugenekulik.adit.dao.jpa.CategoryRepository;
+import by.bntu.eugenekulik.adit.domain.jpa.Advertisement;
+import by.bntu.eugenekulik.adit.service.impl.AdvertisementServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
 
@@ -36,16 +38,17 @@ public class AdvertisementServiceImplTest {
   @Test
   void testGetPage() {
     // Arrange
-    int page = 0;
     Page<Advertisement> expectedPage = mock(Page.class);
-    when(advertisementRepository.findAllByOrderByNameAsc(PageRequest.of(page, 10))).thenReturn(expectedPage);
+    when(advertisementRepository.findAll(PageRequest.of(0, 10,
+        Sort.by(Sort.Direction.ASC,"name")))).thenReturn(expectedPage);
 
     // Act
-    Page<Advertisement> result = advertisementService.getPage(page);
+    Page<Advertisement> result = advertisementService.getPage(0,"name", true);
 
     // Assert
     assertEquals(expectedPage, result);
-    verify(advertisementRepository).findAllByOrderByNameAsc(PageRequest.of(page, 10));
+    verify(advertisementRepository).findAll(PageRequest.of(0, 10,
+        Sort.by(Sort.Direction.ASC,"name")));
   }
 
   @Test

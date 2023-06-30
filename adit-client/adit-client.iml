@@ -5,7 +5,10 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/adit-client" />
+    <content url="file://$MODULE_DIR$/adit-client">
+      <excludeFolder url="file://$MODULE_DIR$/adit-client/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/adit-client/tmp" />
+    </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {Advertisement} from "../../domain/advertisement";
 import {AuthorizationService} from "../../service/authorization.service";
 import {Category} from "../../domain/category";
 import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch";
@@ -13,13 +12,15 @@ import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
 import {Address} from "../../domain/address";
 import {AddressService} from "../../service/address.service";
+import {AdvertisementService} from "../../service/advertisement.service";
+import {ImageService} from "../../service/image.service";
 
 @Component({
   selector: 'app-create-advertisement',
   templateUrl: './create-advertisement.component.html',
   styleUrls: ['./create-advertisement.component.css']
 })
-export class CreateAdvertisementComponent implements OnInit {
+export class CreateAdvertisementComponent {
   private baseUrl = environment.baseUrl;
   advertisement = this.fb.group({
     name: new FormControl('',
@@ -32,7 +33,6 @@ export class CreateAdvertisementComponent implements OnInit {
       [Validators.min(0),
       Validators.max(50000)]),
   })
-
   faCross = faTimes
   images:any[]= [];
   words = new FormControl('');
@@ -43,26 +43,21 @@ export class CreateAdvertisementComponent implements OnInit {
   features: Feature[] = [];
   totalCategoryPage: number;
   faSearch = faSearch;
-
   closeResult = '';
   categoryPage =  0;
   faPlus = faPlus;
   showFeatures = false;
   addressPage = 0;
   totalAddressPage: number;
-
   constructor(private http: HttpClient,
               private auth: AuthorizationService,
               private modalService: NgbModal,
               private fb: FormBuilder,
               private router:Router,
-              public addressService: AddressService) {
+              public addressService: AddressService,
+              public advertisementService:AdvertisementService,
+              public imageService: ImageService) {
   }
-
-  ngOnInit(): void {
-  }
-
-
   createAdvertisement() {
     const adv = {
       name: this.advertisement.value.name,
@@ -74,39 +69,28 @@ export class CreateAdvertisementComponent implements OnInit {
       address: this.currentAddress,
       images: []
     }
-    console.log(adv);
-    this.http.post<Advertisement>(this.baseUrl+"advertisement", adv).subscribe(res => {
-      console.log(res);
+    this.advertisementService.createAdvertisement(adv)
+      .subscribe((res:any) => {
       this.images.forEach(img=>{
-        const form = new FormData();
-        form.append('file',img,img.name);
-        form.append('advertisementId', res.id.toString())
-        this.http.post(this.baseUrl+"images/add", form)
+        this.imageService.saveImage(img,res.id.toString())
           .subscribe(resp => {
-            console.log(resp);
           });
       })
       this.router.navigate(['/user/advertisement']);
     })
   }
-
   onFileSelect(event:any) {
-    this.images.push(event.target.files[0])
-    console.log(this.images);
+    this.images.push(event.target.files[0]);
   }
-
   searchCategories(page:number) {
     this.categoryPage = page;
-    this.http.get(this.baseUrl+"category/search", {
-      params: new HttpParams()
-        .append('words', this.words.value==null?'':this.words.value)
-        .append('page', page)
-    }).subscribe((res:any) => {
+    this.advertisementService
+      .search(page,this.words.value==null?'':this.words.value,'name',true)
+      .subscribe((res:any) => {
       this.categories = res.content;
       this.totalCategoryPage = res.totalPages;
     })
   }
-
   chooseCategory(category: Category, modal: any) {
     this.currentCategory = category;
     this.features = this.recursiveFeatures(category);
@@ -114,7 +98,6 @@ export class CreateAdvertisementComponent implements OnInit {
     this.words.setValue('');
     modal.close('close');
   }
-
   recursiveFeatures(category:Category):Feature[]{
     let features = new Array<Feature>();
     category.features.forEach(f=>{
@@ -128,14 +111,6 @@ export class CreateAdvertisementComponent implements OnInit {
     features = this.deleteDuplicateFeatures(features);
     return features;
   }
-
-  deleteCategory() {
-    this.currentCategory = null;
-  }
-
-
-
-
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -145,18 +120,13 @@ export class CreateAdvertisementComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-
-
-
   deleteImage(image: any) {
     const index = this.images.indexOf(image);
     if(index>-1)this.images.splice(index,1);
   }
-
   changeFeatureValue(event: any, feature: Feature) {
     feature.value = event.target.value;
   }
-
   openCategoryModal(content:any) {
     this.categories = [];
     this.open(content);
@@ -176,11 +146,9 @@ export class CreateAdvertisementComponent implements OnInit {
       },
     );
   }
-
   deleteDuplicateFeatures(features : Array<Feature>) : Array<Feature> {
     const checkedFeatureIds = new Set();
     let uniqueFeatures = new Array<Feature>();
-
     for (const feature of features) {
       const currentFeatureId = feature.featureId;
       if(!checkedFeatureIds.has(currentFeatureId)) {
@@ -188,17 +156,14 @@ export class CreateAdvertisementComponent implements OnInit {
         checkedFeatureIds.add(currentFeatureId);
       }
     }
-
     return uniqueFeatures;
   }
-
   chooseAddress(address: Address, modal: any) {
     this.currentAddress = address;
     this.addresses = [];
     this.words.setValue('');
     modal.close('close');
   }
-
   searchAddresses(page: number) {
     this.addressPage = page;
     this.http.get(this.baseUrl+"address/search", {

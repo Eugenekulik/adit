@@ -33,16 +33,15 @@
           <fa-icon [icon]="faSearch"></fa-icon>
         </button>
         <div ngbDropdown placement="bottom-end" display="dynamic" class="d-inline-block" *ngIf="authorizationService.roleMatch(['client'])">
-          <button type="button" class="btn" ngbDropdownToggle id="user-menu"><fa-icon [icon]="faUser"></fa-icon></button>
+          <button type="button" class="btn" ngbDropdownToggle id="user-menu"><fa-icon [icon]="['fas','user']"></fa-icon></button>
           <div ngbDropdownMenu aria-labelledby="user-menu">
-            <button ngbDropdownItem
-                    class="btn btn-sm"
-                    [routerLink]="'/advertisement/create'">
-              Создать объявление
-            </button>
+            <button ngbDropdownItem class="btn btn-sm"
+                    [routerLink]="'/advertisement/create'">Создать объявление</button>
             <button ngbDropdownItem class="btn btn-sm"
                     [routerLink]="'/user/advertisement'">Мои объявления</button>
             <div class="dropdown-divider"></div>
+            <button ngbDropdownItem class="btn btn-sm"
+                    [routerLink]="'/favourites'">Избранное</button>
             <button ngbDropdownItem class="btn btn-sm"
                     [routerLink]="'/user/edit'">Редактирование пользователя</button>
           </div>

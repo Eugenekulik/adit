@@ -1,6 +1,6 @@
 package by.bntu.eugenekulik.adit.controller;
 
-import by.bntu.eugenekulik.adit.entity.Role;
+import by.bntu.eugenekulik.adit.domain.jpa.Role;
 import by.bntu.eugenekulik.adit.service.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

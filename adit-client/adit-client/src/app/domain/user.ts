@@ -1,7 +1,8 @@
 import {Role} from "./role";
+import {Advertisement} from "./advertisement";
 
 export interface User {
-  userId: number;
+  userId: bigint;
   login: string;
   firstName: string;
   lastName: string;
@@ -10,5 +11,7 @@ export interface User {
   email: string;
 
   roles:Role[];
+
+  favourites: Advertisement[];
 
 }

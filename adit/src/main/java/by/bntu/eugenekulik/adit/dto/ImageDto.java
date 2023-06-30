@@ -1,6 +1,6 @@
 package by.bntu.eugenekulik.adit.dto;
 
-import by.bntu.eugenekulik.adit.entity.Image;
+import by.bntu.eugenekulik.adit.domain.jpa.Image;
 import lombok.Builder;
 import lombok.Data;
 

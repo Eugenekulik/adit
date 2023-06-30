@@ -6,6 +6,7 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons/faSearch"
 import {Feature} from "../../../domain/feature";
 import {environment} from "../../../../environments/environment";
 import {FormControl, Validators} from "@angular/forms";
+import {CategoryService} from "../../../service/category.service";
 
 @Component({
   selector: 'app-administrate-category',
@@ -27,6 +28,10 @@ export class AdministrateCategoryComponent implements OnInit {
   totalCategoryPages: number;
   current: Category;
 
+  //Sort attributes
+  field: string;
+  direction = true;
+
 
   //Feature search modal variables
   featurePage: number;
@@ -42,9 +47,11 @@ export class AdministrateCategoryComponent implements OnInit {
 
 
 
-  constructor(private http:HttpClient, private modalService:NgbModal) { }
+  constructor(private http:HttpClient,
+              private modalService:NgbModal,
+              private categoryService: CategoryService) { }
   ngOnInit(): void {
-    this.getCategories(this.page);
+    this.getCategories(this.page,'name',true);
   }
 
 
@@ -93,15 +100,15 @@ export class AdministrateCategoryComponent implements OnInit {
   }
 
 
-  getCategories(page:number){
+  getCategories(page:number,field:string, direction:boolean){
+    this.direction = direction;
+    this.field = field;
     this.page = page;
-    return this.http.get(this.baseUrl+"category/page", {
-      params: new HttpParams().append('page', page)
-    }).subscribe((res:any) =>{
-      console.log(res);
-      this.categories = res.content;
-      this.totalCategoryPages = res.totalPages;
-    });
+    this.categoryService.getPage(page,field, direction)
+      .subscribe((res:any) =>{
+        this.categories = res.content;
+        this.totalCategoryPages = res.totalPages;
+      });
   }
 
   deleteCategory(category: Category) {
@@ -183,5 +190,6 @@ export class AdministrateCategoryComponent implements OnInit {
       },
     );
   }
+
 
 }

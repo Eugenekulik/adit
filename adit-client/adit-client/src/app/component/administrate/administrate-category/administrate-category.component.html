@@ -3,8 +3,12 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th>название</th>
-        <th>родительская категория</th>
+        <th (click)="getCategories(0,'name', !direction)">
+          название <fa-icon [icon]="['fas','sort']"></fa-icon>
+        </th>
+        <th (click)="getCategories(0,'parent', !direction)">
+          родительская категория <fa-icon [icon]="['fas','sort']"></fa-icon>
+        </th>
         <th>характеристики</th>
         <th></th>
       </tr>
@@ -34,18 +38,18 @@
   <div class="d-flex">
     <div class="col-9">
       <ul class="pagination position-relative m-0">
-        <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getCategories(0)">1</a></li>
+        <li class="page-item" *ngIf="page!=0"><a class="page-link" (click)="getCategories(0,field,direction)">1</a></li>
         <li *ngIf="page>3" class="bg-light">. . .</li>
-        <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getCategories(page-2)">{{page - 1}}</a></li>
-        <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getCategories(page-1)">{{page}}</a></li>
+        <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getCategories(page-2,field,direction)">{{page - 1}}</a></li>
+        <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getCategories(page-1,field,direction)">{{page}}</a></li>
         <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
         <li class="page-item" *ngIf="page<totalCategoryPages-2"><a class="page-link"
-                                                                   (click)="getCategories(page+1)">{{page + 2}}</a></li>
+                                                                   (click)="getCategories(page+1,field,direction)">{{page + 2}}</a></li>
         <li class="page-item" *ngIf="page<totalCategoryPages-3"><a class="page-link"
-                                                                   (click)="getCategories(page+2)">{{page + 3}}</a></li>
+                                                                   (click)="getCategories(page+2,field,direction)">{{page + 3}}</a></li>
         <li *ngIf="page<totalCategoryPages-4" class="bg-light">. . .</li>
         <li class="page-item" *ngIf="page!=totalCategoryPages-1"><a class="page-link"
-                                                                    (click)="getCategories(totalCategoryPages-1)">{{totalCategoryPages}}</a>
+                                                                    (click)="getCategories(totalCategoryPages-1,field,direction)">{{totalCategoryPages}}</a>
         </li>
       </ul>
     </div>

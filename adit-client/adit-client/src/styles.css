@@ -14,6 +14,9 @@ body {
   .modal-content{
     width: 95vw;
   }
+  body{
+    font-size: 70%;
+  }
   .table-responsive {
     width: 90vw;
     overflow-x: scroll;
@@ -31,6 +34,17 @@ body {
     min-height: 420px;
     min-width: 560px;
   }
+  .adv-image-sm {
+    height: 210px;
+    width: 280px;
+    max-height: 210px;
+    max-width: 280px;
+    min-height: 210px;
+    min-width: 280px;
+  }
+  .card {
+    width: 230px;
+  }
 }
 
 @media (min-width: 0px) {
@@ -42,6 +56,17 @@ body {
     min-height: 120px;
     min-width: 160px;
   }
+  .adv-image-sm {
+    height: 60px;
+    width: 80px;
+    max-height: 60px;
+    max-width: 80px;
+    min-height: 60px;
+    min-width: 80px;
+  }
+  .card {
+    width: 90px;
+  }
 }
 @media (min-width: 576px) {
   .adv-image {
@@ -51,6 +76,17 @@ body {
     max-width: 288px;
     min-height: 216px;
     min-width: 288px;
+  }
+  .adv-image-sm {
+    height: 108px;
+    width: 144px;
+    max-height: 108px;
+    max-width: 144px;
+    min-height: 108px;
+    min-width: 144px;
+  }
+  .card {
+    width: 160px;
   }
 }
 
@@ -62,5 +98,16 @@ body {
     max-width: 384px;
     min-height: 286px;
     min-width: 384px;
+  }
+  .adv-image-sm {
+    height: 143px;
+    width: 192px;
+    max-height: 143px;
+    max-width: 192px;
+    min-height: 143px;
+    min-width: 192px;
+  }
+  .card {
+    width: 210px;
   }
 }

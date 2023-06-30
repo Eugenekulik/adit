@@ -1,78 +1,29 @@
 package by.bntu.eugenekulik.adit.service;
 
-import by.bntu.eugenekulik.adit.dao.CategoryRepository;
-import by.bntu.eugenekulik.adit.dao.FeatureRepository;
-import by.bntu.eugenekulik.adit.entity.Category;
-import by.bntu.eugenekulik.adit.entity.Feature;
+import by.bntu.eugenekulik.adit.domain.jpa.Category;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Set;
 
-@Service
-public class CategoryService {
+public interface CategoryService {
+  Category addFeatureToCategory(Long featureId, long categoryId);
 
-  private final CategoryRepository categoryRepository;
+  Category findCategoryByName(String name);
 
-  private final FeatureRepository featureRepository;
+  Page<Category> searchByName(String words, Integer page);
 
-  public CategoryService(CategoryRepository categoryRepository, FeatureRepository featureRepository) {
-    this.categoryRepository = categoryRepository;
-    this.featureRepository = featureRepository;
-  }
+  Category createCategory(Category category);
 
-  public Category addFeatureToCategory(Long featureId, long categoryId){
-    Feature feature = featureRepository.findById(featureId)
-        .orElseThrow(()-> new IllegalArgumentException("not found feature with id: " + featureId));
-    Category category = categoryRepository.findById(categoryId)
-        .orElseThrow(()-> new IllegalArgumentException("not found category with id: " + categoryId));
-    category.getFeatures().add(feature);
-    return categoryRepository.save(category);
-  }
+  Page<Category> getPage(Integer page, String field, Boolean direction);
 
-  public Category findCategoryByName(String name) {
-    return categoryRepository.findByName(name);
-  }
+  Optional<Category> findById(Long id);
 
-  public Page<Category> searchByName(String words, Integer page){
-    return categoryRepository.findByNameContainsOrderByNameAsc(words, PageRequest.of(page, 10));
-  }
+  void deleteCategory(Long id);
 
-  public Category createCategory(Category category) {
-    return categoryRepository.save(category);
-  }
+  Category deleteFeature(Long featureId, Long categoryId);
 
-  public Page<Category> getPage(Integer page) {
-    return categoryRepository.findAllByOrderByNameAsc(PageRequest.of(page, 10));
-  }
+  Set<Category> findChildren(Long parentId);
 
-  public Optional<Category> findById(Long id) {
-    return categoryRepository.findById(id);
-  }
-
-  public void deleteCategory(Long id) {
-    categoryRepository.deleteById(id);
-  }
-
-  public Category deleteFeature(Long featureId, Long categoryId) {
-    Category category = categoryRepository.findById(categoryId).get();
-    category.getFeatures().removeIf(feature -> feature.getFeatureId().equals(featureId));
-    categoryRepository.save(category);
-    return category;
-  }
-
-  public Set<Category> findChildren(Long parentId) {
-    Set<Category> children = new HashSet<>();
-    if(parentId != null) {
-      categoryRepository.findById(parentId).ifPresent(
-          category -> children.addAll(categoryRepository.findByParentOrderByNameAsc(category)));
-    } else children.addAll(categoryRepository.findByParentOrderByNameAsc(null));
-    return children;
-  }
-
-  public Category updateCategory(Category category) {
-    if(category.getCategoryId()==null) throw new RuntimeException("categoryId could not be null");
-    return categoryRepository.save(category);
-  }
+  Category updateCategory(Category category);
 }

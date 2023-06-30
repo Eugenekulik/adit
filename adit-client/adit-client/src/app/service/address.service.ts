@@ -5,6 +5,19 @@ import {Injectable} from "@angular/core";
   providedIn: 'root'
 })
 export class AddressService {
+
+  getShortAddress(address:Address):string{
+    let formattedString = "";
+    if(address == null) return formattedString;
+    if (address.city != null) {
+      formattedString += address.city;
+    }
+    if (address.part != null) {
+      formattedString += ", ";
+      formattedString += address.part;
+    }
+    return formattedString;
+  }
   getFormattedAddress(address : Address) : string {
 
     let formattedString = "";

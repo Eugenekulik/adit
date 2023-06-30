@@ -1,9 +1,13 @@
 package by.bntu.eugenekulik.adit.controller;
 
 import by.bntu.eugenekulik.adit.dto.AdvertisementDto;
-import by.bntu.eugenekulik.adit.entity.Advertisement;
+import by.bntu.eugenekulik.adit.domain.jpa.Advertisement;
+import by.bntu.eugenekulik.adit.domain.jpa.User;
 import by.bntu.eugenekulik.adit.service.AdvertisementService;
 import java.time.LocalDateTime;
+import java.util.Collections;
+
+import by.bntu.eugenekulik.adit.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -18,13 +22,18 @@ public class AdvertisementController {
 
   private final AdvertisementService advertisementService;
 
-  public AdvertisementController(AdvertisementService advertisementService) {
+  private final UserService userService;
+
+  public AdvertisementController(AdvertisementService advertisementService, UserService userService) {
     this.advertisementService = advertisementService;
+    this.userService = userService;
   }
 
   @GetMapping
-  public Iterable<AdvertisementDto> getAdvertisements(@RequestParam int page) {
-    Page<Advertisement> result = advertisementService.getPage(page);
+  public Iterable<AdvertisementDto> getAdvertisements(@RequestParam int page,
+                                                      @RequestParam(required = false) String field,
+                                                      @RequestParam(required = false) Boolean direction) {
+    Page<Advertisement> result = advertisementService.getPage(page, field, direction);
     return new PageImpl<>(result.stream()
         .map(AdvertisementDto::fromAdvertisement)
         .toList(), PageRequest.of(page,10),result.getTotalElements());
@@ -33,7 +42,6 @@ public class AdvertisementController {
   @PostMapping
   public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestBody Advertisement advertisement) {
     advertisement.setPlacedAt(LocalDateTime.now());
-    advertisement.getFeatures().removeIf(featureValue -> featureValue.getValue() == null);
     return new ResponseEntity<>(
         AdvertisementDto.fromAdvertisement(advertisementService.save(advertisement)),
         HttpStatus.CREATED);
@@ -64,21 +72,34 @@ public class AdvertisementController {
   }
 
   @GetMapping("/category")
-  public Iterable<AdvertisementDto> getByCategory(@RequestParam Long categoryId, @RequestParam(required = false) Integer page){
+  public Iterable<AdvertisementDto> getByCategory(@RequestParam Long categoryId,
+                                                  @RequestParam(required = false) Integer page,
+                                                  @RequestParam(required = false) String field,
+                                                  @RequestParam(required = false) Boolean direction){
     if(page == null) page = 0;
-    Page<Advertisement> result = advertisementService.getByCategory(categoryId,page);
+    Page<Advertisement> result = advertisementService.getByCategory(categoryId,page, field, direction);
     return new PageImpl<>(result.stream()
         .map(AdvertisementDto::fromAdvertisement)
         .toList(), PageRequest.of(page,10),result.getTotalElements());
   }
 
   @GetMapping("/user/{id}")
-  public Iterable<AdvertisementDto> getByUser(@PathVariable Long id, @RequestParam(required = false) Integer page){
+  public Iterable<AdvertisementDto> getByUser(@PathVariable Long id, @RequestParam(required = false) Integer page,
+                                              @RequestParam(required = false) String field,
+                                              @RequestParam(required = false) Boolean direction){
     if(page == null) page = 0;
-    Page<Advertisement> result = advertisementService.findByUser(id,page);
+    Page<Advertisement> result = advertisementService.findByUser(id,page,field,direction);
     return new PageImpl<>(result.stream()
         .map(AdvertisementDto::fromAdvertisement)
         .toList(), PageRequest.of(page,10),result.getTotalElements());
+  }
+
+  @GetMapping("/favourites")
+  public Iterable<AdvertisementDto> findFavourites(@RequestParam Long userId){
+    User user = userService.findUserById(userId).orElseGet(null);
+    return user!=null?user.getFavourites().stream()
+        .map(AdvertisementDto::fromAdvertisement)
+        .toList():Collections.emptyList();
   }
 
 

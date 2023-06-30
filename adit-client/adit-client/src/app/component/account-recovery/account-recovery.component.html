@@ -1,0 +1,9 @@
+<div class="card">
+  <div *ngIf="!isConfirm">
+    <input type="email" [formControl]="email" placeholder="Введите адрес электроннной почты">
+    <button (click)="confirm()" [disabled]="email.invalid">отправитьd</button>
+  </div>
+  <div *ngIf="isConfirm">
+    <span>Письмо с сылкой на изменение пароля отправлено на вашу электронную почту. Ссылка будет доступна в течении 30 минут</span>
+  </div>
+</div>

@@ -1,9 +1,8 @@
 package by.bntu.eugenekulik.adit.dto;
 
-import by.bntu.eugenekulik.adit.entity.Category;
+import by.bntu.eugenekulik.adit.domain.jpa.Category;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.mapping.Collection;
 
 import java.util.Collections;
 import java.util.Set;

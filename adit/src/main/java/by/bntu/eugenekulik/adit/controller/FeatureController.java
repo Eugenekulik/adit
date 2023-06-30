@@ -2,7 +2,7 @@ package by.bntu.eugenekulik.adit.controller;
 
 
 import by.bntu.eugenekulik.adit.dto.FeatureDto;
-import by.bntu.eugenekulik.adit.entity.Feature;
+import by.bntu.eugenekulik.adit.domain.jpa.Feature;
 import by.bntu.eugenekulik.adit.service.FeatureService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

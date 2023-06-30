@@ -2,97 +2,82 @@
   <ul
     class="navbar-nav navbar-expand-lg nav-pills d-block flex-column mb-auto adaptive-nav bg-opacity-50 bg-dark col-lg-2 col-sm-12">
     <li *ngIf="parent" class="nav-item btn btn-sm btn-outline-dark col-12" (click)="back()">
-      <fa-icon [icon]="faBack"></fa-icon>
+      <fa-icon [icon]="['fas','arrow-left']"></fa-icon>
     </li>
     <li class="nav-item btn btn-sm btn-outline-dark col-lg-12 col-4 p-lg-0 p-sm-2" *ngFor="let category of categories">
       <button class="w-100 h-auto nav-link" (click)="up(category)">{{category.name}}</button>
     </li>
   </ul>
+
   <div class="col-lg-10 col-sm-12">
-    <div class="p-2 bg-opacity-10 bg-dark mb-5" *ngFor="let advertisement of advertisements">
-      <div class="ms-2">
-        <h2> {{advertisement.name}}</h2>
-        {{advertisement?.address?.country}} {{advertisement?.address?.region}}
-        {{advertisement?.address?.city}} {{advertisement?.address?.part}}
+    <div class="bg-white bg-opacity-50 d-flex">
+      <div class="d-flex col-8 p-1">
+        <p *ngIf="parent" class="h6">
+          Результат поска по категории: <span class="h5">{{parent.name}}</span>
+        </p>
       </div>
-      <div class="d-flex">
-        <div *ngIf="advertisement.images.length" class="col-6">
-          <ngb-carousel class="border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
-            <ng-template ngbSlide *ngFor="let image of advertisement.images">
-              <div class="col-12 d-flex flex-column justify-content-center flex-wrap">
-                <div class="d-flex justify-content-center flex-wrap align-content-center">
-                  <img [src]="baseUrl+'images/'+image.id" alt="Random first slide" class="adv-image">
-                </div>
-              </div>
-            </ng-template>
-          </ngb-carousel>
-        </div>
-        <div class="px-2">
-          <table *ngIf="advertisement.features.length" class="table-hover table">
-            <thead>
-            <tr>
-              <th colspan="2">Характеристики товара</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let feature of advertisement.features">
-              <td
-                placement="right"
-                ngbPopover="{{feature.description}}"
-                popoverTitle="{{feature.name}}"
-                container="body"
-                triggers="mouseenter:mouseleave"
-                #myPopover="ngbPopover"
-                (mouseenter)="myPopover.open()"
-                (mouseleave)="myPopover.close()"
-              >{{feature.name}}
-              </td>
-              <td>{{feature.value}}</td>
-            </tr>
-            </tbody>
-          </table>
-          <table class="table-hover table">
-            <thead>
-            <tr>
-              <th colspan="2">Контакты продавца</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td>Имя продавца</td>
-              <td>{{advertisement.user.firstName}}</td>
-            </tr>
-            <tr>
-              <td>Э-почта</td>
-              <td>{{advertisement.user.email}}</td>
-            </tr>
-            <tr>
-              <td>Номер телефона:</td>
-              <td>{{advertisement.user.phone}}</td>
-            </tr>
-            </tbody>
-          </table>
+      <div ngbDropdown placement="bottom-end" display="dynamic" class="d-inline-block">
+        <button type="button" class="btn btn-outline-dark border-0 btn-custom" ngbDropdownToggle id="user-menu">Сортировать по:</button>
+        <div ngbDropdownMenu aria-labelledby="user-menu">
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('name',true)"
+          >По названию A-Я</button>
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('name',false)"
+          >По названию Я-А</button>
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('price',true)"
+          >Сначала дешёвые</button>
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('price',false)"
+          >Сначала дорогие</button>
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('placedAt',false)"
+          >Сначала новые</button>
+          <button ngbDropdownItem class="btn btn-sm" (click)="changeSort('placedAt',true)"
+          >Сначала старые</button>
         </div>
       </div>
-      <div>
-        <p> {{advertisement.description}}</p>
+    </div>
+    <div class="align-content-center d-flex flex-column flex-wrap">
+      <div class="m-2 bg-opacity-10 bg-dark col-10" *ngFor="let advertisement of advertisements">
+        <div class="ms-2">
+          <a class="h2 btn-link text-dark text-decoration-none" (click)="openAdvertisement(advertisement)"> {{advertisement.name}}</a>
+        </div>
         <div class="d-flex">
-          <span class="col-6">стоимость: {{advertisement.price | currency: 'BYN'}}</span>
-          <div class="col-6 d-flex justify-content-end">
-            <span>дата подачи: {{advertisement.placedAt | date: 'medium'}}</span></div>
+          <div *ngIf="advertisement.images.length" class="col-3">
+            <ngb-carousel class="border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
+              <ng-template ngbSlide *ngFor="let image of advertisement.images">
+                <div class="col-12 d-flex flex-column justify-content-center flex-wrap">
+                  <div class="d-flex justify-content-center flex-wrap align-content-center">
+                    <img [src]="imageService.getImageUrl(image.id)" alt="Random first slide" class="adv-image-sm">
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-carousel>
+          </div>
+          <div class="px-2">
+            <p> {{advertisement.description}}</p>
+          </div>
+        </div>
+        <div>
+          <div class="d-flex">
+            <span class="col-6">{{advertisement.price | currency: 'BYN'}}</span>
+            <div class="col-6 d-flex justify-content-end">
+              <span class="me-2">{{addressService.getShortAddress(advertisement.address)}}</span>
+              <span>{{advertisement.placedAt | customDatePipe}}</span></div>
+          </div>
         </div>
       </div>
     </div>
     <ul class="pagination m-2" *ngIf="advertisements.length">
-      <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAdv(page-1, parent!)">Previous</a></li>
-      <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAdv(page-2, parent!)">{{page - 1}}</a></li>
-      <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAdv(page-1, parent!)">{{page}}</a></li>
+      <li class="page-item" *ngIf="page>0"><a class="page-link" (click)="getAdv(page-1, parent!)">1</a></li>
+      <li class="page-item" *ngIf="page>3"><a class="page-link">. . .</a></li>
+      <li class="page-item" *ngIf="page>2"><a class="page-link" (click)="getAdv(page-2, parent!)">{{page - 1}}</a></li>
+      <li class="page-item" *ngIf="page>1"><a class="page-link" (click)="getAdv(page-1, parent!)">{{page}}</a></li>
       <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
-      <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link"
-                                                         (click)="getAdv(page+1, parent!)">{{page + 2}}</a></li>
       <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link"
+                                                         (click)="getAdv(page+1, parent!)">{{page + 2}}</a></li>
+      <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link"
                                                          (click)="getAdv(page+2, parent!)">{{page + 3}}</a></li>
-      <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link" (click)="getAdv(page+1, parent!)">Next</a>
+      <li class="page-item" *ngIf="page<totalPages-4"><a class="page-link">. . .</a></li>
+      <li class="page-item" *ngIf="page<totalPages-1"><a class="page-link"
+                                                         (click)="getAdv(page+1, parent!)">{{totalPages}}</a>
       </li>
     </ul>
   </div>

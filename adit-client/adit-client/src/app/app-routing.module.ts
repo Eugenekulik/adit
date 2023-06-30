@@ -28,6 +28,10 @@ import {CreateFeatureComponent} from "./component/create-feature/create-feature.
 import {CreateCategoryComponent} from "./component/create-category/create-category.component";
 import {UserAdvertisementComponent} from "./component/user-advertisement/user-advertisement.component";
 import {UserEditComponent} from "./component/user-edit/user-edit.component";
+import {FavouritesComponent} from "./component/favourites/favourites.component";
+import {AdvertisementComponent} from "./component/advertisement/advertisement.component";
+import {AccountRecoveryComponent} from "./component/account-recovery/account-recovery.component";
+import {ChangePasswordComponent} from "./component/account-recovery/change-password/change-password.component";
 
 
 const routes: Routes = [
@@ -49,7 +53,11 @@ const routes: Routes = [
   {path: 'category/create', component: CreateCategoryComponent, canActivate:[AuthGuard],data:{roles:['admin']}},
   {path: 'user/advertisement', component: UserAdvertisementComponent, canActivate:[AuthGuard],data:{roles: ['client']}},
   {path: 'advertisement/edit', component: AdvertisementEditComponent, canActivate:[AuthGuard],data:{roles: ['client','admin']}},
-  {path: 'user/edit', component: UserEditComponent, canActivate:[AuthGuard], data:{roles:['client']}}
+  {path: 'user/edit', component: UserEditComponent, canActivate:[AuthGuard], data:{roles:['client']}},
+  {path: 'favourites', component: FavouritesComponent, canActivate:[AuthGuard], data:{roles: ['client']}},
+  {path: 'advertisement', component: AdvertisementComponent},
+  {path: 'accountrecovery', component: AccountRecoveryComponent},
+  {path: 'accountrecovery/password', component: ChangePasswordComponent}
 ]
 
 @NgModule({

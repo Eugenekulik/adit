@@ -24,12 +24,12 @@ export class UserAdvertisementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this.auth.getUser();
+    this.user = this.auth.getUser()!;
     this.getUserAdvertisement(this.page);
   }
 
   getUserAdvertisement(page: number) {
-    this.http.get(this.baseUrl + "advertisement/user/" + this.user.userId,
+    this.http.get(this.baseUrl + "advertisement/user/" + this.user.userId.toString(),
       {params: new HttpParams().append('page', page)})
       .subscribe((res: any) => {
         this.advertisements = res.content;

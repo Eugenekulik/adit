@@ -1,0 +1,9 @@
+services:
+  rabbitmq:
+    image: 'rabbitmq:latest'
+    environment:
+      RABBITMQ_DEFAULT_PASS: notification_service
+      RABBITMQ_DEFAULT_USER: notification_service
+    ports:
+      - 5672:5672
+      - 15672:15672

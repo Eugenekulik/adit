@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AuthorizationService} from "../../service/authorization.service";
 import {Router} from "@angular/router";
 import {Advertisement} from "../../domain/advertisement";
-import {faSignInAlt, faSearch, faSignOutAlt,faUser} from "@fortawesome/free-solid-svg-icons";
+import {faSearch, faSignIn, faSignOut} from "@fortawesome/free-solid-svg-icons"
+
 
 @Component({
   selector: 'app-header',
@@ -10,13 +11,12 @@ import {faSignInAlt, faSearch, faSignOutAlt,faUser} from "@fortawesome/free-soli
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  faUser = faUser;
-  faSearch = faSearch;
-  faIn= faSignInAlt;
-  faOut = faSignOutAlt;
   advertisements: Advertisement[] = [];
   words: string = '';
   isMenuCollapse = true;
+  faSearch = faSearch;
+  faIn = faSignIn;
+  faOut = faSignOut;
   constructor(public authorizationService:AuthorizationService,
               private router:Router) {}
   ngOnInit(): void {

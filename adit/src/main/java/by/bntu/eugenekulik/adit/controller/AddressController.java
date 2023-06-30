@@ -1,9 +1,7 @@
 package by.bntu.eugenekulik.adit.controller;
 
-import by.bntu.eugenekulik.adit.entity.Address;
+import by.bntu.eugenekulik.adit.domain.jpa.Address;
 import by.bntu.eugenekulik.adit.service.AddressService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

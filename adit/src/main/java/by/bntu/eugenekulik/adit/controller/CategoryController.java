@@ -1,14 +1,13 @@
 package by.bntu.eugenekulik.adit.controller;
 
 import by.bntu.eugenekulik.adit.dto.CategoryDto;
-import by.bntu.eugenekulik.adit.entity.Category;
+import by.bntu.eugenekulik.adit.domain.jpa.Category;
 import by.bntu.eugenekulik.adit.service.CategoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -54,8 +53,10 @@ public class CategoryController {
 
 
   @GetMapping("/page")
-  public Iterable<CategoryDto> getPage(@RequestParam Integer page){
-    Page<Category> result = service.getPage(page);
+  public Iterable<CategoryDto> getPage(@RequestParam Integer page,
+                                       @RequestParam(required = false) String field,
+                                       @RequestParam(required = false) Boolean direction){
+    Page<Category> result = service.getPage(page, field,direction);
     return new PageImpl<>(result
         .map(CategoryDto::fromCategory)
         .toList(),PageRequest.of(page,10),result.getTotalElements());

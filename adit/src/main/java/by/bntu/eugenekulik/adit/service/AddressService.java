@@ -1,49 +1,20 @@
 package by.bntu.eugenekulik.adit.service;
 
-import by.bntu.eugenekulik.adit.dao.AddressRepository;
-import by.bntu.eugenekulik.adit.entity.Address;
+import by.bntu.eugenekulik.adit.domain.jpa.Address;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
-@Service
-public class AddressService {
+public interface AddressService {
+  Page<Address> search(Integer page, String words);
 
-  private AddressRepository addressRepository;
+  Address createAddress(Address address);
 
+  Optional<Address> findById(Long id);
 
-  public Page<Address> search(Integer page, String words){
-    return addressRepository.findByFields(words,PageRequest.of(page,10));
-  }
+  Page<Address> getPage(Integer page);
 
-  public AddressService(AddressRepository addressRepository) {
-    this.addressRepository = addressRepository;
-  }
+  Address updateAddress(Address address);
 
-
-  public Address createAddress(Address address){
-    return addressRepository.save(address);
-  }
-
-
-  public Optional<Address> findById(Long id){
-    return addressRepository.findById(id);
-  }
-
-  public Page<Address> getPage(Integer page){
-    return addressRepository.findAllByOrderByCountryAsc(PageRequest.of(page,10));
-  }
-
-  public Address updateAddress(Address address){
-    return addressRepository.save(address);
-  }
-
-
-  public void deleteAddress(Long id){
-    addressRepository.deleteById(id);
-  }
-
+  void deleteAddress(Long id);
 }
-
-

@@ -15,7 +15,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthGuard} from "./service/auth.guard";
 import {AuthInterceptor} from "./service/auth.interceptor";
 import {AuthenticationService} from "./service/authentication.service";
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {FontAwesomeModule,FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import { AdministrateComponent } from './component/administrate/administrate.component';
 import { AdministrateAdvertisementComponent } from './component/administrate/administrate-advertisement/administrate-advertisement.component';
 import { AdministrateUserComponent } from './component/administrate/administrate-user/administrate-user.component';
@@ -29,9 +29,16 @@ import { CreateAddressComponent } from './component/create-address/create-addres
 import { CreateFeatureComponent } from './component/create-feature/create-feature.component';
 import { CreateCategoryComponent } from './component/create-category/create-category.component';
 import localeRu from "@angular/common/locales/ru"
-import {registerLocaleData} from "@angular/common";
+import {DatePipe, registerLocaleData} from "@angular/common";
 import { UserAdvertisementComponent } from './component/user-advertisement/user-advertisement.component';
 import { UserEditComponent } from './component/user-edit/user-edit.component';
+import { FavouritesComponent } from './component/favourites/favourites.component';
+import { AdvertisementComponent } from './component/advertisement/advertisement.component';
+import { CustomDatePipePipe } from './service/pipe/custom-date-pipe.pipe';
+import {fas} from "@fortawesome/free-solid-svg-icons";
+import {far} from "@fortawesome/free-regular-svg-icons";
+import { AccountRecoveryComponent } from './component/account-recovery/account-recovery.component';
+import { ChangePasswordComponent } from './component/account-recovery/change-password/change-password.component';
 
 registerLocaleData(localeRu,'ru')
 @NgModule({
@@ -56,6 +63,11 @@ registerLocaleData(localeRu,'ru')
     CreateCategoryComponent,
     UserAdvertisementComponent,
     UserEditComponent,
+    FavouritesComponent,
+    AdvertisementComponent,
+    CustomDatePipePipe,
+    AccountRecoveryComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,9 +78,10 @@ registerLocaleData(localeRu,'ru')
     FormsModule,
     HttpClientModule,
     FontAwesomeModule,
-    NgbDropdownModule
+    NgbDropdownModule,
   ],
   providers: [
+    DatePipe,
     AuthGuard,
     {
       provide:HTTP_INTERCEPTORS,
@@ -80,4 +93,8 @@ registerLocaleData(localeRu,'ru')
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas,far);
+  }
+}

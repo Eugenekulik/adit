@@ -1,17 +1,15 @@
 package by.bntu.eugenekulik.adit.dto;
 
-import by.bntu.eugenekulik.adit.entity.User;
 import lombok.Data;
 
 @Data
 public class JwtAuthorizationDto {
   private final String token;
-  private final User user;
+  private final UserDto user;
 
   private final String message;
 
-  public JwtAuthorizationDto(String token, User user, String message) {
-    user.setPassword("");
+  public JwtAuthorizationDto(String token, UserDto user, String message) {
     this.token = token;
     this.user = user;
     this.message = message;

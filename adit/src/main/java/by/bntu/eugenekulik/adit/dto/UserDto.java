@@ -1,7 +1,7 @@
 package by.bntu.eugenekulik.adit.dto;
 
-import by.bntu.eugenekulik.adit.entity.Role;
-import by.bntu.eugenekulik.adit.entity.User;
+import by.bntu.eugenekulik.adit.domain.jpa.Role;
+import by.bntu.eugenekulik.adit.domain.jpa.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;

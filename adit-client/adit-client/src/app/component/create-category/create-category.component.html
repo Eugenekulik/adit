@@ -27,7 +27,7 @@
         <span *ngIf="!parent">отсутствует</span>
         <span *ngIf="parent">{{parent.name}}</span>
       </label>
-      <span *ngIf="parent" (click)="parent = null"><fa-icon [icon]="faTimes"></fa-icon></span>
+      <span *ngIf="parent" (click)="parent = null"><fa-icon [icon]="['fas','times']"></fa-icon></span>
     </div>
     <input type="submit" class="btn btn-primary" value="создать" (click)="createCategory()">
   </form>
@@ -45,7 +45,7 @@
                  placeholder="Поиск"/>
         </div>
         <button type="button" class="btn btn-primary" (click)="searchCategories(0)">
-          <fa-icon [icon]="faSearch"></fa-icon>
+          <fa-icon [icon]="['fas','search']"></fa-icon>
         </button>
       </div>
       <div>

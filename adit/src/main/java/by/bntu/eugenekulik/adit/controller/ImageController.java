@@ -1,11 +1,10 @@
 package by.bntu.eugenekulik.adit.controller;
 
-import by.bntu.eugenekulik.adit.entity.Advertisement;
-import by.bntu.eugenekulik.adit.entity.Image;
+import by.bntu.eugenekulik.adit.domain.jpa.Advertisement;
+import by.bntu.eugenekulik.adit.domain.jpa.Image;
 import by.bntu.eugenekulik.adit.service.AdvertisementService;
 import by.bntu.eugenekulik.adit.service.ImageService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,9 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController

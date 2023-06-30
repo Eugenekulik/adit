@@ -1,4 +1,28 @@
 <div class="container">
+  <div class="bg-white bg-opacity-50 d-flex">
+    <div class="d-flex col-6 col-sm-8 p-1">
+      <p class="h6">
+        Результат поска: <span class="h5">{{words}}</span>
+      </p>
+    </div>
+    <div ngbDropdown placement="bottom-end" display="dynamic" class="d-inline-block">
+      <button type="button" class="btn btn-outline-dark border-0 btn-custom" ngbDropdownToggle id="user-menu">Сортировать по:</button>
+      <div ngbDropdownMenu aria-labelledby="user-menu">
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'name',true)"
+        >По названию A-Я</button>
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'name',false)"
+        >По названию Я-А</button>
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'price',true)"
+        >Сначала дешёвые</button>
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'price',false)"
+        >Сначала дорогие</button>
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'placedAt',false)"
+        >Сначала новые</button>
+        <button ngbDropdownItem class="btn btn-sm" (click)="find(0,'placedAt',true)"
+        >Сначала старые</button>
+      </div>
+    </div>
+  </div>
   <div class="container-fluid p-2 bg-opacity-10 bg-dark mb-2" *ngFor="let advertisement of advertisements">
     <div class="ms-2">
       <h2> {{advertisement.name}}</h2>
@@ -10,64 +34,41 @@
         <ngb-carousel class="border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
           <ng-template ngbSlide *ngFor="let image of advertisement.images">
             <div class="d-flex align-content-center justify-content-center">
-              <img [src]="baseUrl + 'images/' + image.id" alt="Random first slide" class="adv-image">
+              <img [src]="imageService.getImageUrl(image.id)" alt="Random first slide" class="adv-image">
             </div>
           </ng-template>
         </ngb-carousel>
       </div>
       <div class="px-2">
-        <table *ngIf="advertisement.features.length" class="table-hover table">
-          <thead>
-          <tr>
-            <th colspan="2">Характеристики товара</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let feature of advertisement.features">
-            <td
-              placement="right"
-              ngbPopover="{{feature.description}}"
-              popoverTitle="{{feature.name}}"
-              container="body"
-              triggers="mouseenter:mouseleave"
-              #myPopover="ngbPopover"
-              (mouseenter)="myPopover.open()"
-              (mouseleave)="myPopover.close()"
-            >{{feature.name}}
-            </td>
-            <td>{{feature.value}}</td>
-          </tr>
-          </tbody>
-        </table>
-        <table class="table-hover table">
-          <thead>
-          <tr>
-            <th colspan="2">Контакты продавца</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>Имя продавца</td>
-            <td>{{advertisement.user.firstName}}</td>
-          </tr>
-          <tr>
-            <td>Э-почта</td>
-            <td>{{advertisement.user.email}}</td>
-          </tr>
-          <tr>
-            <td>Номер телефона:</td>
-            <td>{{advertisement.user.phone}}</td>
-          </tr>
-          </tbody>
-        </table>
+        <p> {{advertisement.description}}</p>
       </div>
     </div>
-    <p> {{advertisement.description}}</p>
-    <div class="d-flex">
-      <span class="col-6">стоимость: {{advertisement.price | currency: 'BYN'}}</span>
-      <div class="col-6 d-flex justify-content-end">
-        <span>дата подачи: {{advertisement.placedAt | date: 'medium'}}</span></div>
+    <div>
+      <div class="d-flex">
+        <span class="col-6">{{advertisement.price | currency: 'BYN'}}</span>
+        <div class="col-6 d-flex justify-content-end">
+          <span class="me-2">{{addressService.getShortAddress(advertisement.address)}}</span>
+          <span>{{advertisement.placedAt | customDatePipe}}</span></div>
+      </div>
     </div>
   </div>
+  <ul class="pagination m-2" *ngIf="advertisements.length">
+    <li class="page-item" *ngIf="page>0"><a class="page-link"
+        (click)="find(0, field,direction)">1</a></li>
+    <li class="page-item" *ngIf="page>3"><a class="page-link">. . .</a></li>
+    <li class="page-item" *ngIf="page>2"><a class="page-link"
+        (click)="find(page-2,field,direction)">{{page - 1}}</a></li>
+    <li class="page-item" *ngIf="page>1"><a class="page-link"
+        (click)="find(page-1,field,direction)">{{page}}</a></li>
+    <li disabled="true" class="page-item"><a class="page-link">{{page + 1}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link"
+        (click)="find(page+1,field,direction)">{{page + 2}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-3"><a class="page-link"
+        (click)="find(page+2,field,direction)">{{page + 3}}</a></li>
+    <li class="page-item" *ngIf="page<totalPages-4"><a class="page-link">. . .</a></li>
+    <li class="page-item" *ngIf="page<totalPages-2"><a class="page-link"
+        (click)="find(totalPages-1,field,direction)">{{totalPages}}</a>
+    </li>
+  </ul>
 </div>
 

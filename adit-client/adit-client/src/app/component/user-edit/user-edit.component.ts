@@ -24,7 +24,7 @@ export class UserEditComponent implements OnInit {
               private fb:FormBuilder) { }
 
   ngOnInit(): void {
-    let user = this.auth.getUser();
+    let user = this.auth.getUser()!;
     this.form =  this.form = this.fb.group({
       userId: new FormControl(user.userId),
       login: new FormControl(user.login,

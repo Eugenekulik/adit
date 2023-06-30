@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Advertisement} from "../../../domain/advertisement";
 import {Router} from "@angular/router";
 import {environment} from "../../../../environments/environment";
+import {AdvertisementService} from "../../../service/advertisement.service";
 
 @Component({
   selector: 'app-administrate-advertisement',
@@ -15,15 +16,16 @@ export class AdministrateAdvertisementComponent implements OnInit {
   advertisements: Advertisement[];
   page:number = 0;
   totalPages: number;
-  constructor(private http:HttpClient, private router:Router) { }
+  constructor(private http:HttpClient,
+              private router:Router,
+              private advertisementService:AdvertisementService) { }
   ngOnInit(): void {
     this.loadAdvertisement(this.page);
   }
   loadAdvertisement(page:number){
     this.page = page;
-    return this.http.get(this.baseUrl+"advertisement",{
-      params: new HttpParams().append('page', page)
-    }).subscribe((res:any)=>{
+    this.advertisementService.getPage(page,'placedAt',true)
+      .subscribe((res:any)=>{
       this.advertisements = res.content;
       this.totalPages = res.totalPages;
     })

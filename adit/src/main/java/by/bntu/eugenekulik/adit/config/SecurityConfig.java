@@ -43,7 +43,8 @@ public class SecurityConfig {
           .authorizeHttpRequests()
           .requestMatchers(HttpMethod.OPTIONS).permitAll()
           .requestMatchers(HttpMethod.GET).permitAll()
-          .requestMatchers("/","/resources/**","/auth","/register","/images/**").permitAll()
+          .requestMatchers("/","/resources/static/**","/auth","/register",
+              "/accountrecovery/**").permitAll()
           .requestMatchers("/admin").hasRole("admin")
           .anyRequest().authenticated()
           .and()

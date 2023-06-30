@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="container-fluid p-2 bg-opacity-10 bg-dark mb-2" *ngFor="let advertisement of favourites">
+    <div class="ms-2">
+      <div class="d-flex">
+        <div class="col-10 h2">{{advertisement.name}}</div>
+        <button (click)="deleteFromFavourites(advertisement)" class="btn btn-warning">
+          <fa-icon [icon]="['fas', 'star']" ></fa-icon>
+        </button>
+      </div>
+      {{advertisement?.address?.country}} {{advertisement?.address?.region}}
+      {{advertisement?.address?.city}} {{advertisement?.address?.part}}
+    </div>
+    <div class="d-flex">
+      <div *ngIf="advertisement.images.length" class="col-6">
+        <ngb-carousel class="border-2 border-primary bg-dark bg-opacity-10" style="border-radius: 10%">
+          <ng-template ngbSlide *ngFor="let image of advertisement.images">
+            <div class="d-flex align-content-center justify-content-center">
+              <img [src]="baseUrl + 'images/' + image.id" alt="Random first slide" class="adv-image">
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+      <div class="px-2">
+        <table *ngIf="advertisement.features.length" class="table-hover table">
+          <thead>
+          <tr>
+            <th colspan="2">Характеристики товара</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let feature of advertisement.features">
+            <td
+              placement="right"
+              ngbPopover="{{feature.description}}"
+              popoverTitle="{{feature.name}}"
+              container="body"
+              triggers="mouseenter:mouseleave"
+              #myPopover="ngbPopover"
+              (mouseenter)="myPopover.open()"
+              (mouseleave)="myPopover.close()"
+            >{{feature.name}}
+            </td>
+            <td>{{feature.value}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table-hover table">
+          <thead>
+          <tr>
+            <th colspan="2">Контакты продавца</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Имя продавца</td>
+            <td>{{advertisement.user.firstName}}</td>
+          </tr>
+          <tr>
+            <td>Э-почта</td>
+            <td>{{advertisement.user.email}}</td>
+          </tr>
+          <tr>
+            <td>Номер телефона:</td>
+            <td>{{advertisement.user.phone}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p> {{advertisement.description}}</p>
+    <div class="d-flex">
+      <span class="col-6">стоимость: {{advertisement.price | currency: 'BYN'}}</span>
+      <div class="col-6 d-flex justify-content-end">
+        <span>дата подачи: {{advertisement.placedAt | date: 'medium'}}</span></div>
+    </div>
+  </div>
+</div>

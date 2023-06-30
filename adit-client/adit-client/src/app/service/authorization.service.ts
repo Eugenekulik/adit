@@ -13,7 +13,7 @@ export class AuthorizationService {
     localStorage.setItem('user',JSON.stringify(user));
   }
 
-  public getUser(){
+  public getUser():User|null{
     let user = localStorage.getItem('user');
     if(user != null){
       return JSON.parse(user);

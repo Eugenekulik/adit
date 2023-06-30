@@ -8,6 +8,13 @@
   transition: transform 0.7s, background-color 0.7s;
 }
 
+.btn-custom {
+  transition: background-color 0.7s;
+}
+.btn-custom:hover {
+  filter: opacity(20%);
+}
+
 .nav-item:hover {
   transform: scale(110%);
   transform: translateX(10px) ;

@@ -2,7 +2,6 @@ package by.bntu.eugenekulik.adit.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +12,14 @@ import java.io.IOException;
 @Component
 public class JwtFilter implements Filter {
   private static final String AUTHORIZATION = "Authorization";
-  @Autowired
-  private JwtProvider provider;
+  private final JwtProvider provider;
 
-  @Autowired
-  private UserDetailsService userDetailsService;
+  private final UserDetailsService userDetailsService;
+
+  public JwtFilter(JwtProvider provider, UserDetailsService userDetailsService) {
+    this.provider = provider;
+    this.userDetailsService = userDetailsService;
+  }
 
 
   @Override

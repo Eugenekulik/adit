@@ -1,5 +1,5 @@
 <div class="container-fluid d-flex justify-content-center">
-  <form [formGroup]="form" (ngSubmit)="updateUser()" class="col-md-6 col-10" (change)="isSave = !isSave">
+  <form [formGroup]="form" (ngSubmit)="updateUser()" class="col-md-6 col-10" (change)="isSave = false">
     <label for="login">имя пользователя</label>
     <input type="text" name="login" id="login" formControlName="login"
            class="col-12 form-control-lg bg-opacity-50 bg-white mt-2 mb-3">
@@ -65,7 +65,7 @@
           (form.get('email')?.dirty ||
           form.get('email')?.touched)">
       <div class="bg-danger bg-opacity-25 form-control"
-           *ngIf="form.get('email')?.errors?.pattern">
+           *ngIf="form.get('email')?.errors?.email">
         Электронная почта не соответствует формату</div>
     </div>
     <label for="age">Дата рождения</label>
@@ -90,7 +90,7 @@
     </div>
     <input type="hidden" formControlName="userId">
     <div class="d-flex justify-content-end">
-      <input *ngIf="!isSave" type="submit" value="обновить" class="btn btn-primary end-0 col-12">
+      <input *ngIf="!isSave" [disabled]="form.invalid" type="submit" value="обновить" class="btn btn-primary end-0 col-12">
       <button *ngIf="isSave" class="btn btn-success end-0 col-12">сохранено <fa-icon [icon]="faCheck"></fa-icon></button>
     </div>
   </form>

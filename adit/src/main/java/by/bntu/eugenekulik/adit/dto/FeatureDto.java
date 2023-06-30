@@ -1,10 +1,10 @@
 package by.bntu.eugenekulik.adit.dto;
 
-import by.bntu.eugenekulik.adit.entity.Feature;
-import by.bntu.eugenekulik.adit.entity.FeatureValue;
+import by.bntu.eugenekulik.adit.domain.jpa.Feature;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Data
@@ -25,6 +25,16 @@ public class FeatureDto {
         .build();
   }
 
+  public static FeatureDto fromEntry(Map.Entry<Feature,String> entry){
+    return FeatureDto.builder()
+        .featureId(entry.getKey().getFeatureId())
+        .name(entry.getKey().getName())
+        .description(entry.getKey().getDescription())
+        .value(entry.getValue())
+        .build();
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -44,12 +54,5 @@ public class FeatureDto {
     feature.setName(name);
     feature.setDescription(description);
     return feature;
-  }
-
-  public FeatureValue toFeatureValue(){
-    FeatureValue featureValue = new FeatureValue();
-    featureValue.setValue(value);
-    featureValue.setFeatureId(featureId);
-    return featureValue;
   }
 }
